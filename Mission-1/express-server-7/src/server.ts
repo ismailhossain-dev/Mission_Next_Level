@@ -28,6 +28,7 @@ const pool = new Pool({
  * BOOLEAN DEFAULT true=> boolean value set true defult value
  * INT= number type
  * UNIQUE => eta email er morde use korle 1 email diye user 2 bar create hobe na(important)
+ * *=All
  */
 const initDB = async () => {
   await pool.query(`
@@ -47,7 +48,7 @@ const initDB = async () => {
   //console kore dektechi daabase create hoitese kina
   console.log("database connectend successfully");
 };
-
+initDB();
 //=======================
 app.get("/", (req: Request, res: Response) => {
   // res.send('Hello World!!!!!')
@@ -57,39 +58,54 @@ app.get("/", (req: Request, res: Response) => {
     author: "Sabbir vai",
   });
 });
+//User post api
 
-app.post("/", async (req: Request, res: Response) => {
+app.post("/api/user", async (req: Request, res: Response) => {
   //   console.log(req.body);
   //==client information gola amra thundar client er mardome ditechi========
-  const {name , email , password, age} = req.body; //client teke data nitechi
+  const { name, email, password, age } = req.body; //client teke data nitechi
 
-//========fist post method========
-//=====$1 $2 kore bole ditechi koita value post hobe neondb agola amra ws school teke kortechi
-//==========RETURNING * eta use hoi response dekanor jonno * use na kore amra bole dite pari kon kon response amra dekte chai like name , email
+  //========fist post method========
+  //=====$1 $2 kore bole ditechi koita value post hobe neondb agola amra ws school teke kortechi
+  //==========RETURNING * eta use hoi response dekanor jonno * use na kore amra bole dite pari kon kon response amra dekte chai like name , email
 
-try {
+  try {
     const result = await pool.query(
-  `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING *`,
-  [name, email, password, age] // <--- Ekhane array-te values pass korte hobe
-);
-//console.log("post response", result)//SUCCESSFUL
-  res.status(201).json({
-    message: "created",
-    data: result. rows[0] //main response
-  });
-} catch (error: any) {
+      `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [name, email, password, age], // <--- Ekhane array-te values pass korte hobe
+    );
+    //console.log("post response", result)//SUCCESSFUL
+    res.status(201).json({
+        ssuccess: true,
+      message: "created",
+      data: result.rows[0], //main response
+    });
+  } catch (error: any) {
     res.status(500).json({
-        message: error.message,
-        error: error
-    
-    })
-}
-
-    
-
+        ssuccess: false,
+      message: error.message,
+      error: error,
+    });
+  }
 });
 
-initDB()
+// User Retrive api
+app.get("/api/user", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users`);
+    res.status(200).json({
+      ssuccess: true,
+      message: "Users retrived successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: error,
+    });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
