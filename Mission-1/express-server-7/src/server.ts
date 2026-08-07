@@ -20,15 +20,31 @@ const pool = new Pool({
 });
 
 //==========crete neondb database table
+//====IF NOT EXISTS mane holo table ekbar create hole er create hobe na validation
+
+/**
+ * NOT NULL = required value must be dite hobe
+ * VARCHAR(20)=max 20 ta word dite parbe
+ * BOOLEAN DEFAULT true=> boolean value set true defult value
+ * INT= number type
+ */
 const initDB = async () => {
   await pool.query(`
-        CREATE TABLE users(
+        CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY, 
         name  VARCHAR(20),
-        email VARCHAR(20),
-        
+        email VARCHAR(20) NOT NULL,
+        password VARCHAR(20) NOT NULL,
+        is_active BOOLEAN DEFAULT true,
+        age INT,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+
         )
     `);
+
+  //console kore dektechi daabase create hoitese kina
+  console.log("database connectend successfully");
 };
 
 //=======================
@@ -49,6 +65,8 @@ app.post("/", async (req: Request, res: Response) => {
     data: body, //client all data network & terminal e pabo
   });
 });
+
+initDB()
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
