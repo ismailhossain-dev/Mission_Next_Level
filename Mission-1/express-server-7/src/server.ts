@@ -27,13 +27,14 @@ const pool = new Pool({
  * VARCHAR(20)=max 20 ta word dite parbe
  * BOOLEAN DEFAULT true=> boolean value set true defult value
  * INT= number type
+ * UNIQUE => eta email er morde use korle 1 email diye user 2 bar create hobe na(important)
  */
 const initDB = async () => {
   await pool.query(`
         CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY, 
         name  VARCHAR(20),
-        email VARCHAR(20) NOT NULL,
+        email VARCHAR(20) UNIQUE NOT NULL,
         password VARCHAR(20) NOT NULL,
         is_active BOOLEAN DEFAULT true,
         age INT,
@@ -59,11 +60,33 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/", async (req: Request, res: Response) => {
   //   console.log(req.body);
-  const body = req.body; //client teke data nitechi
+  //==client information gola amra thundar client er mardome ditechi========
+  const {name , email , password, age} = req.body; //client teke data nitechi
+
+//========fist post method========
+//=====$1 $2 kore bole ditechi koita value post hobe neondb agola amra ws school teke kortechi
+//==========RETURNING * eta use hoi response dekanor jonno * use na kore amra bole dite pari kon kon response amra dekte chai like name , email
+
+try {
+    const result = await pool.query(
+  `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING *`,
+  [name, email, password, age] // <--- Ekhane array-te values pass korte hobe
+);
+//console.log("post response", result)//SUCCESSFUL
   res.status(201).json({
     message: "created",
-    data: body, //client all data network & terminal e pabo
+    data: result. rows[0] //main response
   });
+} catch (error: any) {
+    res.status(500).json({
+        message: error.message,
+        error: error
+    
+    })
+}
+
+    
+
 });
 
 initDB()
