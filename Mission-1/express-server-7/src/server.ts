@@ -150,10 +150,19 @@ app.put("/api/user/:id", async (req: Request, res: Response) => {
 
   try {
     // 1. 'await' add kora hoyeche ebong id=$4 kora hoyeche
-    const result = await pool.query(
-      `UPDATE users SET name = $1, password = $2, age = $3 WHERE id = $4 RETURNING *`, 
-      [name, password, age, id] // Ekhane $4 er jonno id pass kora holo
-    );
+    /**
+     * COALESCE => use korle amr jokon kono kichu update korbo tokon jodi user name dite bule jai  tahole database name ta update hoye null hoye jabe tai amra eta use korchi jeno update na korle same line ei takuk
+     */
+const result = await pool.query(
+  `UPDATE users SET 
+    name = COALESCE($1, name),
+    password = COALESCE($2, password), 
+    age = COALESCE($3, age),
+    is_active = COALESCE($4, is_active)
+   WHERE id = $5 
+   RETURNING *`, 
+  [name, password, age, true, id] // Ekhane 5ta value thakte hobe: $1, $2, $3, $4, ebong $5 (id)
+);
 
     // Jodi user na paoa jay
     if (result.rows.length === 0) {
