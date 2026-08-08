@@ -6,6 +6,7 @@ import express, {
 
 import config from "./config";
 import {  pool } from "./db";
+import { useRoute } from "./modules/user/user.route";
 const app: Application = express();
 const port = config.port;
 
@@ -26,34 +27,12 @@ app.get("/", (req: Request, res: Response) => {
     author: "Sabbir vai",
   });
 });
+
+//user jodi app/user request kore take tahole user ke useRouter er vior niye jabe mane meini server ekane and eta holo user.route.ts er viror
+app.use('/api/users', useRoute)
 //User post api
 
-app.post("/api/user", async (req: Request, res: Response) => {
-  const { name, email, password, age } = req.body;
 
-  //========fist post method========
-  //=====$1 $2 kore bole ditechi koita value post hobe neondb agola amra ws school teke kortechi
-  //==========RETURNING * eta use hoi response dekanor jonno * use na kore amra bole dite pari kon kon response amra dekte chai like name , email
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [name, email, password, age], 
-    );
-  
-    res.status(201).json({
-        ssuccess: true,
-      message: "created",
-      data: result.rows[0], //main response
-    });
-  } catch (error: any) {
-    res.status(500).json({
-        ssuccess: false,
-      message: error.message,
-      error: error,
-    });
-  }
-});
 
 // get all user 
 app.get("/api/user", async (req: Request, res: Response) => {
