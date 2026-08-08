@@ -1,37 +1,16 @@
-import { Router, type Request, type Response } from "express";
-import { pool } from "../../db";
+//user post route & user mini server
+import { Router } from "express";
+import { userController } from "./user.controller";
+
 
 const router = Router()
 
-// app route 
-
-//eta holo apoi/user so ekane amra ekta / disi because amra app.ts ser korchi app.user('/api/user') er viro
-router.post("/", async (req: Request, res: Response) => {
-  const { name, email, password, age } = req.body;
-
-  //========fist post method========
-  //=====$1 $2 kore bole ditechi koita value post hobe neondb agola amra ws school teke kortechi
-  //==========RETURNING * eta use hoi response dekanor jonno * use na kore amra bole dite pari kon kon response amra dekte chai like name , email
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [name, email, password, age], 
-    );
-  
-    res.status(201).json({
-        ssuccess: true,
-      message: "created",
-      data: result.rows[0], //main response
-    });
-  } catch (error: any) {
-    res.status(500).json({
-        ssuccess: false,
-      message: error.message,
-      error: error,
-    });
-  }
-});
+/**
+ * ei route er jonno 2ta kaj hoytese 2file e 
+ * 1.app.ts eta app.user korchi and ekane route set kore disilam like app.user('/api/user')
+ * 2.user.controller.ts e amra req response ta handle kortechi
+ */
+router.post("/",userController.createUser );
 
 // export kora holo
 export const useRoute = router
