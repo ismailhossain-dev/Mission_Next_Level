@@ -1,9 +1,9 @@
-//v-10 etar mardome amra env sathe server e connect kortechi
+//m-7v-10 etar mardome amra env sathe server e connect kortechi
 import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({
-  path: path.join(process.cwd(), '.env') // path.json er bodole path.join ebong '.env' string kora holo
+  path: path.join(process.cwd(), '.env')//env root e rakchi // path.json er bodole path.join ebong '.env' string kora holo
 });
 
 const config = {
