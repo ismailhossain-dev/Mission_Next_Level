@@ -4,7 +4,7 @@ import express, {
   type Response,
 } from "express";
 //postgress import
-import { Pool } from "pg";
+import { Pool, Result } from "pg";
 const app: Application = express();
 const port = 5000;
 
@@ -152,6 +152,8 @@ app.put("/api/user/:id", async (req: Request, res: Response) => {
     // 1. 'await' add kora hoyeche ebong id=$4 kora hoyeche
     /**
      * COALESCE => use korle amr jokon kono kichu update korbo tokon jodi user name dite bule jai  tahole database name ta update hoye null hoye jabe tai amra eta use korchi jeno update na korle same line ei takuk
+     * 
+     CORLESCE BENIFITES=> holo amra 4ta filed teke spacific 2ta o update korte parbo
      */
 const result = await pool.query(
   `UPDATE users SET 
@@ -188,6 +190,42 @@ const result = await pool.query(
   }
 });
 
+
+// delete api created 
+
+app.delete("/api/user/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    // 1. [Result] er bodole [id] pass kora holo ebong RETURNING * dewa holo
+    const result = await pool.query(
+      `DELETE FROM users WHERE id = $1 RETURNING *`, 
+      [id]
+    );
+
+    // Jodi oi id-er kono user na thake
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found to delete!"
+      });
+    }
+
+    // 2. Success-e 'success: true' kora holo
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully!!",
+      data: result.rows[0] // Konti delete holo tar info
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: error
+    });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
