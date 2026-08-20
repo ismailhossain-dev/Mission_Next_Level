@@ -11,6 +11,9 @@ const router = Router()
  * 2.user.controller.ts e amra req response ta handle kortechi
  */
 router.post("/",userController.createUser );
+//Get All user
+router.get("/", userController.getAllUsers);
+
 
 // export kora holo
 export const useRoute = router

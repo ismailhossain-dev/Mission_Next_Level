@@ -35,24 +35,9 @@ app.use('/api/users', useRoute)
 
 
 // get all user 
-app.get("/api/user", async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query(`SELECT * FROM users`);
-    res.status(200).json({
-      ssuccess: true,
-      message: "Users retrived successfully",
-      data: result.rows,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-      error: error,
-    });
-  }
-});
+app.use('/api/users', useRoute)
 
-//get one user 
+//get signle user 
 app.get("/api/user/:id", async (req: Request, res: Response) => {
   // get id from client 
   const { id } = req.params;

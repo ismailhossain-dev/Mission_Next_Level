@@ -1,4 +1,4 @@
-// user.controller.ts request response handle kora chara ja kichu take segola amra ekane handle korbo 
+// user.controller.ts request response handle kora chara ja kichu take segola amra ekane handle korbo & handle database query
 
 import { pool } from "../../db";
 import type { IUser } from "./user.interface";
@@ -14,8 +14,18 @@ const createUserIntoDB = async (payload:IUser)=> {
     return  result;
 } 
 
+// Get all user function 
+
+const getAllUsersFromDB = async(payload:IUser)=>{
+
+     const result = await pool.query(`SELECT * FROM users`);
+     return result;
+  
+}
+
 
 
 export const userService = {
-    createUserIntoDB
+    createUserIntoDB,
+    getAllUsersFromDB
 }
