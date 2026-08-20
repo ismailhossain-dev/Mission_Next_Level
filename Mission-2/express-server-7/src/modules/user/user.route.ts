@@ -13,6 +13,7 @@ const router = Router()
 router.post("/",userController.createUser );
 //Get All user
 router.get("/", userController.getAllUsers);
+// router.get('/', )
 
 
 // export kora holo

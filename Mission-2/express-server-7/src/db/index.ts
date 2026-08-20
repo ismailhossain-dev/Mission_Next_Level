@@ -3,8 +3,7 @@ import { Pool } from "pg";
 import config from "../config";
 
 export const pool = new Pool({
-  connectionString:config.connnection_string
-   ,
+  connectionString: config.connnection_string,
 });
 
 //==========crete neondb database table
@@ -24,6 +23,20 @@ export const initDB = async () => {
 
         )
     `);
+
+  // create a profile table M:8 V:5
+await pool.query(`
+    CREATE TABLE IF NOT EXISTS profiles(
+        id SERIAL PRIMARY KEY,
+        user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+        bio TEXT,
+        address TEXT,
+        phone VARCHAR(15),
+        gender VARCHAR(10),
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+    )
+`);
 
   //console kore dektechi daabase create hoitese kina
   console.log("database connectend successfully");
