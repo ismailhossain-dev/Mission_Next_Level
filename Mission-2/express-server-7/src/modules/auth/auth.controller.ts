@@ -7,6 +7,11 @@ const loginUser =  async (req:Request, res:Response)=> {
 
     try {
         const result = await authService.loginUserIntoDB(req.body)
+        res.status(201).json({
+            success: false,
+            message: "jwt retrive successfully",
+            data: result
+        })
         
     } catch (error:any) {
         res.status(500).json({
