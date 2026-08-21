@@ -38,39 +38,7 @@ app.use('/api/users', useRoute)
 app.use('/api/users', useRoute)
 
 //get signle user 
-app.get("/api/user/:id", async (req: Request, res: Response) => {
-  // get id from client 
-  const { id } = req.params;
-
-  try {
-    const result = await pool.query(
-      `SELECT * FROM users WHERE id = $1`, 
-      [id]
-    );
-
-    // Jodi user na paoa jay
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found!"
-      });
-    }
-
-    // Success response pathano
-    return res.status(200).json({
-      success: true,
-      message: "Single User fetched successfully",
-      data: result.rows[0] // Shudhumatrooi single user-er data pathanor jonno
-    });
-
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-      error: error
-    });
-  }
-});
+app.use("/api/user", useRoute);
 
 
 // update user 

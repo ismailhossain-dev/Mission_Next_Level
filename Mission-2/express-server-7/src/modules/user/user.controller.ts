@@ -45,12 +45,43 @@ const getAllUsers = (async (req: Request, res: Response) => {
   }
 })
  
+// get singleUser
 
+const getSingleUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
+    if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid User ID",
+        });
+    }
 
-// ekan teke onek object export hobe tai etake object akare ditechi
-//user.route.ts call korbo tai ekane pass korchi
+    try {
+        const result = await userService.getSingleUser(id);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found!",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Single User fetched successfully",
+            data: result.rows[0],
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 export const userController = {
     createUser,
-    getAllUsers
-}
+    getAllUsers,
+    getSingleUser,
+};
