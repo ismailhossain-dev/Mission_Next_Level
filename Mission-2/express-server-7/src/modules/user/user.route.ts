@@ -17,4 +17,8 @@ router.get("/", userController.getAllUsers);
 //get signle user
 router.get("/:id", userController.getSingleUser);
 
+
+// update user 
+router.put("/:id", userController.updateUser)
+
 export const useRoute = router;

@@ -42,51 +42,7 @@ app.use("/api/user", useRoute);
 
 
 // update user 
-app.put("/api/user/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name, password, age } = req.body;
-
-  try {
-    // 1. 'await' add kora hoyeche ebong id=$4 kora hoyeche
-    /**
-     * COALESCE => use korle amr jokon kono kichu update korbo tokon jodi user name dite bule jai  tahole database name ta update hoye null hoye jabe tai amra eta use korchi jeno update na korle same line ei takuk
-     * 
-     CORLESCE BENIFITES=> holo amra 4ta filed teke spacific 2ta o update korte parbo
-     */
-const result = await pool.query(
-  `UPDATE users SET 
-    name = COALESCE($1, name),
-    password = COALESCE($2, password), 
-    age = COALESCE($3, age),
-    is_active = COALESCE($4, is_active)
-   WHERE id = $5 
-   RETURNING *`, 
-  [name, password, age, true, id] // Ekhane 5ta value thakte hobe: $1, $2, $3, $4, ebong $5 (id)
-);
-
-    // Jodi user na paoa jay
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found to update!"
-      });
-    }
-
-    // Success response
-    return res.status(200).json({
-      success: true,
-      message: "User updated successfully",
-      data: result.rows[0]
-    });
-
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-      error: error
-    });
-  }
-});
+app.use("/api/user", useRoute);
 
 
 // delete api created 

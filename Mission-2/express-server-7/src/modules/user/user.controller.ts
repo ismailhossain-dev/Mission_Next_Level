@@ -80,8 +80,52 @@ const getSingleUser = async (req: Request, res: Response) => {
     }
 };
 
+
+//update user response 
+
+const updateUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { name, password, age } = req.body;
+
+    if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid User ID",
+        });
+    }
+
+    try {
+        const result = await userService.updateUserIntoDB(
+            id,
+            name,
+            password,
+            age
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found to update!",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: result.rows[0],
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error,
+        });
+    }
+};
+
 export const userController = {
     createUser,
     getAllUsers,
     getSingleUser,
+    updateUser
 };
