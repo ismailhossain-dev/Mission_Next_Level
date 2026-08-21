@@ -24,4 +24,5 @@ router.put("/:id", userController.updateUser)
 // delete user
 router.delete("/:id",userController.deleteUser )
 
+
 export const useRoute = router;

@@ -7,6 +7,7 @@ import express, {
 import config from "./config";
 import {  pool } from "./db";
 import { useRoute } from "./modules/user/user.route";
+import { useRouteProfile } from "./modules/profile/profile.route";
 const app: Application = express();
 const port = config.port;
 
@@ -50,6 +51,11 @@ app.use("/api/user", useRoute);
 
 app.use("/api/user",useRoute );
 
+
+// profiles routes 
+
+//post routes 
+app.use("/api/profile", useRouteProfile)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
