@@ -29,8 +29,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 //user jodi app/user request kore take tahole user ke useRouter er vior niye jabe mane meini server ekane and eta holo user.route.ts er viror
-app.use('/api/users', useRoute)
 //User post api
+app.use('/api/users', useRoute)
+
 
 
 
@@ -47,7 +48,7 @@ app.use("/api/user", useRoute);
 
 // delete api created 
 
-app.use("/api/user/:id",useRoute );
+app.use("/api/user",useRoute );
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
