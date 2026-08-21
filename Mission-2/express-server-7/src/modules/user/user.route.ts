@@ -5,23 +5,10 @@ import { userController } from "./user.controller";
 
 const router = Router()
 
-/**
- * ei route er jonno 2ta kaj hoytese 2file e 
- * 1.app.ts eta app.user korchi and ekane route set kore disilam like app.user('/api/user')
- * 2.user.controller.ts e amra req response ta handle kortechi
- */
 router.post("/",userController.createUser );
-//Get All user
 router.get("/", userController.getAllUsers);
-
-//get signle user
 router.get("/:id", userController.getSingleUser);
-
-
-// update user 
-router.put("/:id", userController.updateUser)
-
-// delete user
+router.put("/:id", userController.updateUser);
 router.delete("/:id",userController.deleteUser )
 
 

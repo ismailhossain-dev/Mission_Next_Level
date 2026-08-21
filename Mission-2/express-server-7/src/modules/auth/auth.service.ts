@@ -33,6 +33,7 @@ const loginUserIntoDB = async (payload: {
   //console.log("jwt user ", user);
 
   // ===Genarate Token m:8 v:9 ========
+  // jwt ti ke ei ei information gola disi and agola diye verify korchi
   const jwtPayload = {
     id: user.id,
     name: user.name,
