@@ -9,13 +9,14 @@ export const pool = new Pool({
 //==========crete neondb database table
 //====IF NOT EXISTS mane holo table ekbar create hole er create hobe na validation
 
+//paswrod ekane VARCHAR use kori nai because amr password hash e rakbo and koro word hobe seta janbo na
 export const initDB = async () => {
   await pool.query(`
         CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY, 
-        name  VARCHAR(20),
-        email VARCHAR(20) UNIQUE NOT NULL,
-        password VARCHAR(20) NOT NULL,
+        name  VARCHAR(25),
+        email VARCHAR(30) UNIQUE NOT NULL,
+        password TEXT NOT NULL,
         is_active BOOLEAN DEFAULT true,
         age INT,
         created_at TIMESTAMP DEFAULT NOW(),

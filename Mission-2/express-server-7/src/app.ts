@@ -31,13 +31,13 @@ app.get("/", (req: Request, res: Response) => {
 
 //user jodi app/user request kore take tahole user ke useRouter er vior niye jabe mane meini server ekane and eta holo user.route.ts er viror
 //User post api
-app.use('/api/users', useRoute)
+app.use('/api/user', useRoute)
 
 
 
 
 // get all user 
-app.use('/api/users', useRoute)
+app.use('/api/user', useRoute)
 
 //get signle user 
 app.use("/api/user", useRoute);

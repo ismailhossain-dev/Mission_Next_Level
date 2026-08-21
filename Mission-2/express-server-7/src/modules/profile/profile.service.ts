@@ -1,8 +1,13 @@
+
 import { pool } from "../../db";
 
 const createProfileIntoDB = async (payload: any) => {
   // console.log("profile data" , payload)
   const { user_id, bio, address, phone, gender } = payload;
+
+  //hash password
+
+ 
 
   //step-1: ekane cheek kora hoiche users table id sathe profile id matech koche kina and match korle update hobe
   const user = await pool.query(

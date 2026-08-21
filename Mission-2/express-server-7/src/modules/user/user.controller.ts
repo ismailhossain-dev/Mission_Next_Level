@@ -13,7 +13,7 @@ try {
   
     res.status(201).json({
         ssuccess: true,
-      message: "created",
+      message: " User Created Successfully",
       //rows error ta solve korar jonno just amra user.service.ts return result kore disi
       data: result.rows[0], //main response
     });
