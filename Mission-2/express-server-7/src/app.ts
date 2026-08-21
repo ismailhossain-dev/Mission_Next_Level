@@ -8,6 +8,7 @@ import config from "./config";
 import {  pool } from "./db";
 import { useRoute } from "./modules/user/user.route";
 import { useRouteProfile } from "./modules/profile/profile.route";
+import { jwtRoute } from "./modules/auth/auth.route";
 const app: Application = express();
 const port = config.port;
 
@@ -56,6 +57,12 @@ app.use("/api/user",useRoute );
 
 //post routes 
 app.use("/api/profile", useRouteProfile)
+
+
+// jwt implement
+
+app.use("/api/auth", jwtRoute)
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
