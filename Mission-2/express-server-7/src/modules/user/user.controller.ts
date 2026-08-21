@@ -123,9 +123,49 @@ const updateUser = async (req: Request, res: Response) => {
     }
 };
 
+
+//user delete user response
+
+const deleteUser = async (req: Request, res: Response) => {
+      const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid User ID",
+        });
+    }
+  try {
+    // 1. [Result] er bodole [id] pass kora holo ebong RETURNING * dewa holo
+ const result = await userService.deleteUserIntoDB(id);
+
+    // Jodi oi id-er kono user na thake
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found to delete!"
+      });
+    }
+
+    // 2. Success-e 'success: true' kora holo
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully!!",
+      data: result.rows[0] // Konti delete holo tar info
+    });
+
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: error
+    });
+  }
+}
 export const userController = {
     createUser,
     getAllUsers,
     getSingleUser,
-    updateUser
+    updateUser,
+    deleteUser
 };

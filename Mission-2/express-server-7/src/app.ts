@@ -47,39 +47,7 @@ app.use("/api/user", useRoute);
 
 // delete api created 
 
-app.delete("/api/user/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  try {
-    // 1. [Result] er bodole [id] pass kora holo ebong RETURNING * dewa holo
-    const result = await pool.query(
-      `DELETE FROM users WHERE id = $1 RETURNING *`, 
-      [id]
-    );
-
-    // Jodi oi id-er kono user na thake
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found to delete!"
-      });
-    }
-
-    // 2. Success-e 'success: true' kora holo
-    return res.status(200).json({
-      success: true,
-      message: "User deleted successfully!!",
-      data: result.rows[0] // Konti delete holo tar info
-    });
-
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-      error: error
-    });
-  }
-});
+app.use("/api/user/:id",useRoute );
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
