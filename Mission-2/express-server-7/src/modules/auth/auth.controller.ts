@@ -1,4 +1,4 @@
-//create a function & handle req , res
+//authentication jw-2 create a function & handle req , res
 
 import type { Request, Response } from "express"
 import { authService } from "./auth.service"

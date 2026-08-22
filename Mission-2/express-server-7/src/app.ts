@@ -10,6 +10,7 @@ import { useRoute } from "./modules/user/user.route";
 import { useRouteProfile } from "./modules/profile/profile.route";
 import { jwtRoute } from "./modules/auth/auth.route";
 import fs from "fs"
+import logger from "./middleware/logger";
 const app: Application = express();
 const port = config.port;
 
@@ -19,14 +20,8 @@ app.use(express.urlencoded({ extended: true })); //nested data receive korbe
 
 
 //======M:9  Express middlewear implement for authorization======
-app.use((req, res, next) => {
-  console.log('Method - URL - Time:', Date.now());
-  const  log = `\n Method --> ${req.method} --> Time ${Date.now()} --> URL --> ${req.url} \n`
-  fs.appendFile("logger.text", log , (err)=> {
-    console.log(err)
-  })
-  next(); //eta use na korle server load hobe na just loading nive
-});
+//====== Logger middlewear=======
+app.use(logger);
 
 //=======================
 app.get("/", (req: Request, res: Response) => {

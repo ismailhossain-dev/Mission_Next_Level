@@ -1,3 +1,4 @@
+//authentication jw-3
 import bcrypt from "bcryptjs";
 import { pool } from "../../db";
 import jwt from "jsonwebtoken"
