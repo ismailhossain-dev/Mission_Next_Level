@@ -8,9 +8,9 @@ import config from "./config";
 import {  pool } from "./db";
 import { useRoute } from "./modules/user/user.route";
 import { useRouteProfile } from "./modules/profile/profile.route";
-import { jwtRoute } from "./modules/auth/auth.route";
+import { jwtRoute } from "./modules/authentication/auth.route";
 import fs from "fs"
-import logger from "./middleware/logger";
+import logger from "./authorization/logger";
 const app: Application = express();
 const port = config.port;
 
