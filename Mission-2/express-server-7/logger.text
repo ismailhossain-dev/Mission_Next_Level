@@ -1,0 +1,6 @@
+
+ Method --> GET --> Time 1787389953488 --> URL --> / 
+
+ Method --> GET --> Time 1787389970860 --> URL --> /users 
+
+ Method --> POST --> Time 1787389993822 --> URL --> /api/auth/login 

@@ -9,6 +9,7 @@ import {  pool } from "./db";
 import { useRoute } from "./modules/user/user.route";
 import { useRouteProfile } from "./modules/profile/profile.route";
 import { jwtRoute } from "./modules/auth/auth.route";
+import fs from "fs"
 const app: Application = express();
 const port = config.port;
 
@@ -16,9 +17,16 @@ app.use(express.json()); //eta use korle amra req.body te kono response pabo na
 app.use(express.text()); //text format e data receive korbe
 app.use(express.urlencoded({ extended: true })); //nested data receive korbe
 
-//=======postgress work =================
-//connect postgress  with neondb
 
+//======M:9  Express middlewear implement for authorization======
+app.use((req, res, next) => {
+  console.log('Method - URL - Time:', Date.now());
+  const  log = `\n Method --> ${req.method} --> Time ${Date.now()} --> URL --> ${req.url} \n`
+  fs.appendFile("logger.text", log , (err)=> {
+    console.log(err)
+  })
+  next(); //eta use na korle server load hobe na just loading nive
+});
 
 //=======================
 app.get("/", (req: Request, res: Response) => {
@@ -33,10 +41,6 @@ app.get("/", (req: Request, res: Response) => {
 //user jodi app/user request kore take tahole user ke useRouter er vior niye jabe mane meini server ekane and eta holo user.route.ts er viror
 //User post api
 app.use('/api/user', useRoute)
-
-
-
-
 // get all user 
 app.use('/api/user', useRoute)
 

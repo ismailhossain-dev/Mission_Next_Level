@@ -1,5 +1,3 @@
-// ekane request and response ta handle korbo
-
 import type { Request, Response } from "express";
 import { userService } from "./user.service";
 
@@ -8,13 +6,11 @@ const createUser = async (req: Request, res: Response) => {
 //   const { name, email, password, age } = req.body;
 
 try {
-    //ei function er kaj ta amra user.service.ts file e korchi
    const result = await userService.createUserIntoDB(req.body)
   
     res.status(201).json({
         ssuccess: true,
       message: " User Created Successfully",
-      //rows error ta solve korar jonno just amra user.service.ts return result kore disi
       data: result.rows[0], //main response
     });
   } catch (error: any) {
@@ -136,10 +132,7 @@ const deleteUser = async (req: Request, res: Response) => {
         });
     }
   try {
-    // 1. [Result] er bodole [id] pass kora holo ebong RETURNING * dewa holo
  const result = await userService.deleteUserIntoDB(id);
-
-    // Jodi oi id-er kono user na thake
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
