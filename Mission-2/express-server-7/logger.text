@@ -84,3 +84,109 @@
  Method --> GET --> Time 1787405015903 --> URL --> /api/user 
 
  Method --> GET --> Time 1787405162173 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787406418411 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787406568048 --> URL --> /api/user 
+
+ Method --> OPTIONS --> Time 1787408552182 --> URL --> /api/v1/auth/sign-in/social 
+
+ Method --> GET --> Time 1787408563728 --> URL --> /api/v1/auth/get-session 
+
+ Method --> POST --> Time 1787413179435 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787413255948 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787413403086 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787413697239 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787414140244 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787414158335 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787414168113 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787414256570 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787416916735 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787416956454 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787417066513 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787417188666 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787417222534 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787417382946 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787417882855 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787417924529 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787417940570 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787418003296 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787418027372 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787418069075 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787418157530 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787418203260 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787418233779 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787418345009 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787418364079 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787418388669 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787418473501 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787418678534 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787418793238 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787418823398 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787418841894 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787418994218 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419176021 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419237257 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787419285252 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419319527 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787419337497 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787419412679 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419429891 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787419445351 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419646088 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787419682648 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787419715018 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787420205682 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787420467799 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787420499033 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787420509927 --> URL --> /api/auth/login 
+
+ Method --> GET --> Time 1787420521034 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787420533369 --> URL --> /api/user 

@@ -6,13 +6,14 @@ import type { IUser } from "./user.interface";
 //1. ei functon ta amra user.controller.ts user korbo
 //eta holo user post method
 const createUserIntoDB = async (payload: IUser) => {
-  const { name, email, password, age } = payload;
+  const { name, email, password, age, role } = payload;
   //convert hash password
    const hashPassword = await bcrypt.hash(password, 10)
    //RETURING  be bole disi ki ki response dekane and sob responsose dekte chaile * eta use korbo
+   //COALESCE($5, 'user') role jodi null ase tahole bydefualt user insert hobe
   const result = await pool.query(
-    `INSERT INTO users(name, email, password, age) VALUES ($1, $2, $3, $4) RETURNING * `,
-    [name, email, hashPassword, age],
+    `INSERT INTO users(name, email, password, age, role) VALUES ($1, $2, $3, $4, COALESCE($5 , 'user')) RETURNING * `,
+    [name, email, hashPassword, age,role],
   );
 
   //eeta use korle response er morde password ta dekabe na
