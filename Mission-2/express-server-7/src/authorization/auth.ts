@@ -1,15 +1,22 @@
+//ekane sob kaj hobe authentaticaton er er upor depend kore
 //M:9, V:2 authorization work etar kaj holo getalluser er api req er response ta just admin dekte pabe
 import type { NextFunction, Request, Response } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { pool } from "../db";
+
+//1.Check if the token exist
+//2.verify the token
+//3.Find the user into database
+//4.it the user active or not?
 const auth = () => {
     return async (
         req: Request,
         res: Response,
         next: NextFunction
     ) => {
-    // console.log(req.headers) //success
+ try {
+     // console.log(req.headers) //success
     // console.log(req.headers.authoization)//success
     const token = req.headers.authorization;
     console.log(token);
@@ -63,7 +70,13 @@ const auth = () => {
       message: "Forbidden"
     })
    }
+
+   //etar console ta amra user.controller.ts dekchi and o paichi
+   req.user = decoded;  //req: {user: {}}
     next();
+ } catch (error) {
+    next(error)  //error ta next function pass kore disi ekon error ta clear vabe read kora jabe
+ }
   };
 };
 

@@ -6,7 +6,7 @@ const logger = (req:Request, res:Response, next:NextFunction) => {
 //   console.log('Method - URL - Time:', Date.now());
   const  log = `\n Method --> ${req.method} --> Time ${Date.now()} --> URL --> ${req.url} \n`
   fs.appendFile("logger.text", log , (err)=> {
-    console.log(err)
+    // console.log(err) //eta lagbe na karone eta error na pawer karone bar bar console null ditese
   })
   next(); //eta use na korle server load hobe na just loading nive
 }
