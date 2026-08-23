@@ -11,10 +11,12 @@ app.get("/", (req: Request, res: Response) => {
     author: "Hlw_Sabbir",
   });
 });
-// api
+//user
 app.use("/api/user", useRoute);
 app.use("/api/user", useRoute);
 app.use("/api/user", useRoute);
+app.use("/api/user", useRoute);
+app.use("/api/user", useRoute)
 
 //server.ts run korar jonno app take export kort hobe
 export default app;
