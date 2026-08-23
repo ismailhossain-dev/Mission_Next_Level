@@ -20,7 +20,7 @@ const auth = (...roles: ROLES[]) => {
       // console.log(req.headers) //success
       // console.log(req.headers.authoization)//success
       const token = req.headers.authorization;
-      console.log(token);
+      console.log("autorization token ", token);
       //auth folder vitor 3 file mile ekta token korechi seta jodi na take
       //401=unauthorize access
       if (!token) {
@@ -75,12 +75,12 @@ const auth = (...roles: ROLES[]) => {
         });
       }
 
-      console.log("Auth Role authorization/auth.ts", user.role);
+      // console.log("Auth Role authorization/auth.ts", user.role);
 
       //vaildation admin role
       //roles= ["admin", "agent"]
       //user.role= "user" | "agent" | "admin"
-      console.log(" cheek currently user role ", user.role)
+      // console.log(" cheek currently user role ", user.role)
       //most important
       if (roles.length && !roles.includes(user.role)) {
         return res.status(403).json({

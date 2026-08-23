@@ -4,7 +4,9 @@ import { authController } from "./auth.controller";
 
 const router = Router();
 
-// router.post
+//accessToken post rotue jwt 
 router.post ("/login", authController.loginUser)
 
+// referesh token post route jwt
+router.post("/refresh-token", authController.refreshToken)
 export const jwtRoute = router;

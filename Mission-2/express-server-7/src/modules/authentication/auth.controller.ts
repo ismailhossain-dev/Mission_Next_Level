@@ -29,6 +29,14 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+
+//refresh token function etar mardome cokkies teke access-token ta niye asobo 
+
+const refreshToken = async(req:Request, res:Response)=> {
+  //cokkies er value pawer jonno app.ts npm i cookie-parser eta install korte hobe
+    console.log("refresh cokkie console auth.controller.ts", req.cookies)
+}
 export const authController = {
   loginUser,
+  refreshToken
 };

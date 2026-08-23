@@ -10,10 +10,11 @@ import { useRoute } from "./modules/user/user.route";
 import { useRouteProfile } from "./modules/profile/profile.route";
 import { jwtRoute } from "./modules/authentication/auth.route";
 import fs from "fs"
+import cookieParser from "cookie-parser"
 import logger from "./authorization/logger";
 const app: Application = express();
 const port = config.port;
-
+app.use(cookieParser())//eta use korchi auth.controller.ts e cookies er value ta pawer jonno
 app.use(express.json()); //eta use korle amra req.body te kono response pabo na
 app.use(express.text()); //text format e data receive korbe
 app.use(express.urlencoded({ extended: true })); //nested data receive korbe
