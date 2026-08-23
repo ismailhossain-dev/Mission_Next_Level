@@ -41,6 +41,8 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
     expiresIn: "1d"
   })
 
+
+  // console.log(accessToken)
   return {accessToken}
 };
 
