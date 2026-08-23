@@ -3,3 +3,19 @@
  
  Method ---> GET --> Time 1787503779523 --> URL--->/user 
  
+ Method ---> GET --> Time 1787503813332 --> URL--->/user 
+ 
+ Method ---> GET --> Time 1787505109898 --> URL--->/api/users 
+ 
+ Method ---> GET --> Time 1787505305970 --> URL--->/api/users 
+ 
+ Method ---> GET --> Time 1787505380587 --> URL--->/api/users 
+ 
+ Method ---> GET --> Time 1787505557727 --> URL--->/api/users 
+ 
+ Method ---> POST --> Time 1787505621934 --> URL--->/api/auth/login 
+ 
+ Method ---> GET --> Time 1787505646021 --> URL--->/api/users 
+ 
+ Method ---> GET --> Time 1787506062389 --> URL--->/api/users 
+ 
