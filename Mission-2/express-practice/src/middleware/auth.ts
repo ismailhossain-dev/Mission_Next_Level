@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import type { ROLES } from "../types";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config";
+import { pool } from "../db";
 const auth = (...roles: ROLES[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,7 +23,48 @@ const auth = (...roles: ROLES[]) => {
         config.secret_key as string,
       ) as JwtPayload;
 
-      //console.log("middleware auth.ts decoded",decoded)//successfully
+      console.log("middleware auth.ts decoded", decoded); //successfully
+
+      //==find user between email===
+
+      const userData = await pool.query(
+        `
+    SELECT * FROM users WHERE email = $1
+    `,
+        [decoded.email],
+      );
+
+      //   console.log("UserData from db", userData);
+
+      if (userData.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          message: "middleware auth.ts user not found",
+        });
+      }
+
+      const user = userData.rows[0];
+
+      //is_active true na hole
+      if (!user?.is_active) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden",
+        });
+      }
+
+      //imporant configuration admin & seller role chara api ta access korte parbe na
+
+      if (roles.length && !roles.includes(user.role)) {
+        res.status(403).json({
+          success: false,
+          message: "Forbidden !! | This route have no access for user",
+        });
+      }
+
+      //decoded er morder user take set kore diyechi
+      req.user = decoded; 
+
       next();
     } catch (error) {
       next(error);
