@@ -1,5 +1,6 @@
 import express, { type Request, type Response } from "express";
 import { useRoute } from "./modules/user/user.route";
+import { autRoute } from "./modules/auth/auth.route";
 const app = express();
 
 //middlewear
@@ -16,7 +17,10 @@ app.use("/api/user", useRoute);
 app.use("/api/user", useRoute);
 app.use("/api/user", useRoute);
 app.use("/api/user", useRoute);
-app.use("/api/user", useRoute)
+app.use("/api/user", useRoute);
+
+// jwt implement 
+app.use("/api/auth", autRoute)
 
 //server.ts run korar jonno app take export kort hobe
 export default app;
