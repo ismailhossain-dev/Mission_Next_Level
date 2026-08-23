@@ -13,6 +13,7 @@ res.status(200).json({
 })
 // api
 app.use("/api/user", useRoute)
+app.use("/api/user", useRoute)
 
 //server.ts run korar jonno app take export kort hobe
 export default app; 
