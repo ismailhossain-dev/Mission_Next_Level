@@ -5,7 +5,10 @@ const app = express()
 app.use(express.json())
 
 app.get('/', (req:Request, res:Response) => {
-  res.send('Hello World!')
+res.status(200).json({
+    message: "Express Practice",
+    author: "Hlw_Sabbir"
+})
 })
 
 
