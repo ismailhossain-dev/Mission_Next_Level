@@ -33,7 +33,7 @@ const loginUserIntoDB = async (payload: {
   }
   //console.log("jwt user ", user);
 
-  // ===Genarate Token m:8 v:9 ========
+  // ===Genarate Access Token Token m:8 v:9 ========
   // jwt ti ke ei ei information gola disi and agola diye verify korchi
   const jwtPayload = {
     id: user.id,
@@ -41,13 +41,21 @@ const loginUserIntoDB = async (payload: {
     role: user.role,
     is_active: user.is_active,
     email: user.email
-  }
+  } 
   const accessToken = jwt.sign(jwtPayload,config.secret as string, {
     expiresIn: "1d"
   })
+    //generate refresh token M:9 V:6
+    //browser cokkie =>etar kaj ta amra auth.controller.ts and ei token take browser cokkie te set korbo 
+  const refreshToken = jwt.sign(jwtPayload,config.refresh_secret as string, {
+    expiresIn: "1d"
+  })
   
-  return {accessToken}
-  ///============
+  //==eta amra api/user get response e pataidisi========
+  return {accessToken, refreshToken}
+
+
+  
 };
 
 export const authService = {
