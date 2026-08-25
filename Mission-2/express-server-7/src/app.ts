@@ -12,6 +12,8 @@ import { jwtRoute } from "./modules/authentication/auth.route";
 import fs from "fs"
 import cookieParser from "cookie-parser"
 import logger from "./middleware/logger";
+import cors from "cors"
+import globallErrorHandler from "./middleware/globallErrorHandler";
 const app: Application = express();
 const port = config.port;
 app.use(cookieParser())//eta use korchi auth.controller.ts e cookies er value ta pawer jonno
@@ -19,11 +21,15 @@ app.use(express.json()); //eta use korle amra req.body te kono response pabo na
 app.use(express.text()); //text format e data receive korbe
 app.use(express.urlencoded({ extended: true })); //nested data receive korbe
 
-
 //======M:9  Express middlewear implement for authorization======
 //====== Logger middlewear=======
 app.use(logger);
 
+
+app.use(cors({
+  //client link
+  origin: 'http://localhost:3000',//next js projec origin
+}))
 //=======================
 app.get("/", (req: Request, res: Response) => {
   // res.send('Hello World!!!!!')
@@ -66,6 +72,10 @@ app.use("/api/auth", jwtRoute)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// globall error handleling 
+
+app.use(globallErrorHandler);
 
 
 export default app;
