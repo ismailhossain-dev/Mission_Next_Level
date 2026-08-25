@@ -266,3 +266,35 @@
  Method --> GET --> Time 1787652766635 --> URL --> /api/user 
 
  Method --> POST --> Time 1787653433811 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787657745168 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787658437439 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787659018741 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659587083 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659589899 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659618064 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659623312 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659624166 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787659679785 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787659686466 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787661948007 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787661973311 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787661978766 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787662062560 --> URL --> /api/auth/refresh-token 
+
+ Method --> POST --> Time 1787662094201 --> URL --> /api/auth/login 
+
+ Method --> POST --> Time 1787662241503 --> URL --> /api/auth/refresh-token 

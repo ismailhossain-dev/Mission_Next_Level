@@ -34,7 +34,22 @@ const loginUser = async (req: Request, res: Response) => {
 
 const refreshToken = async (req: Request, res: Response) => {
   //cokkies er value pawer jonno app.ts npm i cookie-parser eta install korte hobe
-  console.log("refresh cokkie console auth.controller.ts", req.cookies);
+  // console.log("refresh cokkie", req.cookies);
+
+try {
+    const result = await authService.generateFreshToken(req.cookies.refreshToken);
+    res.status(201).json({
+      success: true, 
+      message: "Access token generate successfully",
+      data:result
+    })
+} catch (error:any) {
+  res.status(500).json({
+    success: false, 
+    message: error,
+    error: error.message
+  })
+}
 };
 export const authController = {
   loginUser,
