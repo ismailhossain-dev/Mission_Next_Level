@@ -2,12 +2,14 @@ import express, { type Request, type Response } from "express";
 import { useRoute } from "./modules/user/user.route";
 import { autRoute } from "./modules/auth/auth.route";
 import logger from "./middleware/logger";
+import cookieParser from "cookie-parser"
 const app = express();
 
 //middlewear
 app.use(express.json());
 //logger implement and check request method 
 app.use(logger)
+app.use(cookieParser())//used for set cokkies data
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({

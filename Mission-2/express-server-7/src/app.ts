@@ -11,7 +11,7 @@ import { useRouteProfile } from "./modules/profile/profile.route";
 import { jwtRoute } from "./modules/authentication/auth.route";
 import fs from "fs"
 import cookieParser from "cookie-parser"
-import logger from "./authorization/logger";
+import logger from "./middleware/logger";
 const app: Application = express();
 const port = config.port;
 app.use(cookieParser())//eta use korchi auth.controller.ts e cookies er value ta pawer jonno

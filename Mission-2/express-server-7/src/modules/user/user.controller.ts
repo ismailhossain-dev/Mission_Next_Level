@@ -27,7 +27,7 @@ try {
 const getAllUsers = (async (req: Request, res: Response) => {
 
     //eta holo authorization/auth.ts req.user = decoded; ei value ta
-    console.log("controller authorization data", req.user)
+    // console.log("controller authorization data", req.user)
   try {
    const result = await userService.getAllUsersFromDB(req.body)
      res.status(200).json({
