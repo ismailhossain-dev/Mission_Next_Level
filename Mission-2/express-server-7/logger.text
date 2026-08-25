@@ -304,3 +304,5 @@
  Method --> GET --> Time 1787664931521 --> URL --> /api/user 
 
  Method --> GET --> Time 1787664936240 --> URL --> /api/user 
+
+ Method --> POST --> Time 1787673344124 --> URL --> /api/user 

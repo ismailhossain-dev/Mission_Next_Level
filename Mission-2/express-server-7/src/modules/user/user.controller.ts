@@ -1,40 +1,45 @@
 import type { Request, Response } from "express";
 import { userService } from "./user.service";
-
+import sendResponse from "../../utility/sendResponse";
 
 const createUser = async (req: Request, res: Response) => {
-//   const { name, email, password, age } = req.body;
+  //   const { name, email, password, age } = req.body;
 
-
-try {
-   const result = await userService.createUserIntoDB(req.body)
-  
-    res.status(201).json({
-        ssuccess: true,
-      message: " User Created Successfully",
-      data: result.rows[0], //main response
+  try {
+    const result = await userService.createUserIntoDB(req.body);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "User created successfully!",
+      data: result.rows[0],
     });
+
+    // res.status(201).json({
+    //     ssuccess: true,
+    //   message: " User Created Successfully",
+    //   data: result.rows[0], //main response
+    // });
   } catch (error: any) {
-    res.status(500).json({
-        ssuccess: false,
+    sendResponse(res, {
+      statusCode: 500,
+      success: false,
       message: error.message,
-      error: error,
+      error:error
     });
   }
-}
+};
 
 //getAlluser response
-const getAllUsers = (async (req: Request, res: Response) => {
-    //eta holo middleware/auth.ts user ta ekane pabo
-    //console.log("user.controlle.ts", req.user);
+const getAllUsers = async (req: Request, res: Response) => {
+  //eta holo middleware/auth.ts user ta ekane pabo
+  //console.log("user.controlle.ts", req.user);
   try {
-   const result = await userService.getAllUsersFromDB(req.body)
-     res.status(200).json({
+    const result = await userService.getAllUsersFromDB(req.body);
+    res.status(200).json({
       ssuccess: true,
       message: "Users retrived successfully",
       data: result.rows,
     });
-
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -42,104 +47,97 @@ const getAllUsers = (async (req: Request, res: Response) => {
       error: error,
     });
   }
-})
- 
+};
+
 // get singleUser
 
 const getSingleUser = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid User ID",
-        });
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid User ID",
+    });
+  }
+
+  try {
+    const result = await userService.getSingleUser(id);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
     }
 
-    try {
-        const result = await userService.getSingleUser(id);
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found!",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Single User fetched successfully",
-            data: result.rows[0],
-        });
-    } catch (error: any) {
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Single User fetched successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-
-//update user response 
+//update user response
 
 const updateUser = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { name, password, age } = req.body;
+  const { id } = req.params;
+  const { name, password, age } = req.body;
 
-    if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid User ID",
-        });
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid User ID",
+    });
+  }
+
+  try {
+    const result = await userService.updateUserIntoDB(id, name, password, age);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found to update!",
+      });
     }
 
-    try {
-        const result = await userService.updateUserIntoDB(
-            id,
-            name,
-            password,
-            age
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found to update!",
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "User updated successfully",
-            data: result.rows[0],
-        });
-    } catch (error: any) {
-        return res.status(500).json({
-            success: false,
-            message: error.message,
-            error: error,
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      error: error,
+    });
+  }
 };
-
 
 //user delete user response
 
 const deleteUser = async (req: Request, res: Response) => {
-      const { id } = req.params;
+  const { id } = req.params;
 
-    if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid User ID",
-        });
-    }
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid User ID",
+    });
+  }
   try {
- const result = await userService.deleteUserIntoDB(id);
+    const result = await userService.deleteUserIntoDB(id);
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "User not found to delete!"
+        message: "User not found to delete!",
       });
     }
 
@@ -147,21 +145,20 @@ const deleteUser = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "User deleted successfully!!",
-      data: result.rows[0] // Konti delete holo tar info
+      data: result.rows[0], // Konti delete holo tar info
     });
-
   } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message,
-      error: error
+      error: error,
     });
   }
-}
+};
 export const userController = {
-    createUser,
-    getAllUsers,
-    getSingleUser,
-    updateUser,
-    deleteUser
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };
