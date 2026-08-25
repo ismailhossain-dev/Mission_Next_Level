@@ -1,3 +1,4 @@
+//amra sob token generate korbo authentication teke and ekane validation kore divo user ki ki korte parbe
 import type { NextFunction, Request, Response } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config";
@@ -75,7 +76,7 @@ const auth = (...roles:ROLES[]) => {
     if(roles.length && !roles.includes(user.role)){
       return res.status(403).json({
         success:false,
-        message: "Forbidden and not match role"
+        message: "Forbidden !! This role have no access"
       })
     }
 

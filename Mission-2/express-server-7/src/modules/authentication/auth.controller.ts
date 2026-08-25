@@ -8,16 +8,17 @@ const loginUser = async (req: Request, res: Response) => {
     const result = await authService.loginUserIntoDB(req.body);
     //=====refresh token response M:9 V:6 next level verify=========
     //refreshToken= ei name e browser cokkie te refresh token ta save hobe
-    const {refreshToken} = result; 
+    const { refreshToken } = result;
     res.cookie("refreshToken", refreshToken, {
-        secure: false, //eta production deploy e true kore divo
-        httpOnly: true, //brower cokkies ta amra js diye access korte pari na tai httponly tru kore dile tokon ni access korte pari
-        sameSite: "lax"//eta use korle method bole dite parbo get, sathe naki post er sathe kaj korbe
+      //=====ei 3ta option security jonno bole dischi=========
+      secure: false, //eta production deploy e true kore divo
+      httpOnly: true, //brower cokkies ta amra js diye access korte pari na tai httponly tru kore dile tokon ni access korte pari
+      sameSite: "lax", //eta use korle method bole dite parbo get, sathe naki post er sathe kaj korbe
     });
     //=============
     res.status(201).json({
       success: false,
-      message: "jwt login successfully",
+      message: "User login successfully",
       data: result,
     });
   } catch (error: any) {
@@ -29,14 +30,13 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+//refresh token function etar mardome cokkies teke access-token ta niye asobo
 
-//refresh token function etar mardome cokkies teke access-token ta niye asobo 
-
-const refreshToken = async(req:Request, res:Response)=> {
+const refreshToken = async (req: Request, res: Response) => {
   //cokkies er value pawer jonno app.ts npm i cookie-parser eta install korte hobe
-    console.log("refresh cokkie console auth.controller.ts", req.cookies)
-}
+  console.log("refresh cokkie console auth.controller.ts", req.cookies);
+};
 export const authController = {
   loginUser,
-  refreshToken
+  refreshToken,
 };

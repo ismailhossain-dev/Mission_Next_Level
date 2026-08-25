@@ -59,7 +59,7 @@ app.use("/api/user",useRoute );
 app.use("/api/profile", useRouteProfile)
 
 
-// jwt implement
+// jwt implement & refresh token implement
 
 app.use("/api/auth", jwtRoute)
 
