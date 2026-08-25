@@ -8,16 +8,15 @@ import type { IUser } from "./user.interface";
 const createUserIntoDB = async (payload: IUser) => {
   const { name, email, password, age, role } = payload;
   //convert hash password
-   const hashPassword = await bcrypt.hash(password, 10)
-   //RETURING  be bole disi ki ki response dekane and sob responsose dekte chaile * eta use korbo
-   //COALESCE($5, 'user') role jodi null ase tahole bydefualt user insert hobe
+  const hashPassword = await bcrypt.hash(password, 10);
+  // COALESCE jodi user create somoy role nai hoi tahole ta o role set hobe user
   const result = await pool.query(
     `INSERT INTO users(name, email, password, age, role) VALUES ($1, $2, $3, $4, COALESCE($5 , 'user')) RETURNING * `,
-    [name, email, hashPassword, age,role],
+    [name, email, hashPassword, age, role],
   );
 
   //eeta use korle response er morde password ta dekabe na
-  delete result.rows[0].password
+  delete result.rows[0].password;
   //user.controller.ts ekta error asche like Property 'rows' does not exist on type 'void'. so eta solve korar jonno return result kora holo
   return result;
 };
@@ -65,22 +64,20 @@ const updateUserIntoDB = async (
   return result;
 };
 
-
-
-// user delete query 
+// user delete query
 
 const deleteUserIntoDB = async (id: string) => {
-    const result = await pool.query(
-        `DELETE FROM users WHERE id = $1 RETURNING *`,
-        [id]
-    );
+  const result = await pool.query(
+    `DELETE FROM users WHERE id = $1 RETURNING *`,
+    [id],
+  );
 
-    return result;
+  return result;
 };
 export const userService = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUser,
   updateUserIntoDB,
-  deleteUserIntoDB
+  deleteUserIntoDB,
 };

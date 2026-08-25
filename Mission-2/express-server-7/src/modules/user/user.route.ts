@@ -9,10 +9,9 @@ import auth from "../../middleware/auth";
 const router = Router()
 
 router.post("/",userController.createUser );
-// get All user ei route admin & agent route chara er kew access korte parbe na ei route take
 
-
-router.get("/",auth(), userController.getAllUsers);
+//user take admin and agent role dekte pabe
+router.get("/",auth(USER_ROLE.admin, USER_ROLE.agent), userController.getAllUsers);
 
 router.get("/:id", userController.getSingleUser);
 router.put("/:id", userController.updateUser);
