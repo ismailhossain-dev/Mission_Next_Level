@@ -306,3 +306,11 @@
  Method --> GET --> Time 1787664936240 --> URL --> /api/user 
 
  Method --> POST --> Time 1787673344124 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787674033582 --> URL --> / 
+
+ Method --> GET --> Time 1787674034534 --> URL --> /favicon.ico 
+
+ Method --> GET --> Time 1787674040262 --> URL --> /api/user 
+
+ Method --> GET --> Time 1787674954171 --> URL --> /api/user 

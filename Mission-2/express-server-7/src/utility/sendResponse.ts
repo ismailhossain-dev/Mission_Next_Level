@@ -4,7 +4,7 @@ type TResponse<T> = {
   statusCode: number;
   success: boolean;
   message: string;
-  data?: T;
+  data?: T; //eta response asbe ki asbe nai t use korchi sure na
   error?: any; // ✅ optional
 };
 
