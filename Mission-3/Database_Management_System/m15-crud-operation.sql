@@ -157,8 +157,6 @@ values
 
 
 --V:9 Understanding Inner Join most important!!!---
-
-
 --ekane amra 2ta table teke join method use kore data niye aslam...
 --after on akta condition set korchi
 --join user kore 2ta table ke 
@@ -170,3 +168,9 @@ select * from posts join users on posts.user_id = users.id;
 --as use for short name 
 
 select * from posts as p join users as u on p.user_id = u.id; 
+
+
+--V:10 Left Join Made Easy eta v:9 er join er moto kaj kore seem just data gola ekto ulat palot hoi
+
+--jodi amra users id null dei posts table tahole amra join diye data get korle sei data dive na easy vabe bolle null value dei na
+ select * from posts as p inner join users as u on p.user_id= u.id; 
