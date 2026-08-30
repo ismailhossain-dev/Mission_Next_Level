@@ -153,3 +153,20 @@ values
   ('my first backend project', 4),
   ('introduction to javascript', 2),
   ('building a full stack application', 3);
+
+
+
+--V:9 Understanding Inner Join most important!!!---
+
+
+--ekane amra 2ta table teke join method use kore data niye aslam...
+--after on akta condition set korchi
+--join user kore 2ta table ke 
+select posts.user_id, username, title from posts join users on posts.user_id = users.id;
+
+--posts and table 2ta table er information eksathe dekbo
+select * from posts join users on posts.user_id = users.id;
+
+--as use for short name 
+
+select * from posts as p join users as u on p.user_id = u.id; 
