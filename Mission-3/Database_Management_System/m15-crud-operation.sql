@@ -129,4 +129,27 @@ having count(*) > 1;
 
 --countries where avarage student age is grater than 21
 
-select country, avg(age) from students group by country having avg(age) > 20; 
+select country, avg(age) from students group by country having avg(age) > 20;
+
+create table users (
+  id serial primary key, 
+  username varchar(25) not null
+)
+
+  insert into users (username) values('sabbir'), ('abir'), ('mitu'), ('mirja');
+
+create table posts (
+  id serial primary key , 
+  title text not null, 
+  --foreign key most impornat
+  --id type always int hoi
+  user_id int references users(id)
+);
+
+--user_id must be user id sathe match takte hobe and jodi id matech na kore tahole insert hobe na eta relational er jonno most imporant
+insert into posts (title, user_id)
+values
+  ('learning postgresql', 1),
+  ('my first backend project', 4),
+  ('introduction to javascript', 2),
+  ('building a full stack application', 3);
