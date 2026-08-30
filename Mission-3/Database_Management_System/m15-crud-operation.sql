@@ -104,4 +104,29 @@ select age from students where age=20 and blood_group= 'AB-';
 
 
 
---V:5 GROUP BY Explained---
+--V:5 GROUP BY Explained eta bascially data get er jonno use hoi---
+--group by just ekta data retunr kore ----
+--get country name  
+--ekane amra dekchi country avarage age like 35/2 = 17.5;
+select country,  avg(age) from students group by country;
+
+--check kon country kotojon student ache---
+
+--(*) eta mane hole row gola dive--
+select country, count(*) from students group by country; 
+
+
+
+--V:6 GROUP BY With HAVING----
+
+--- group by er sathe filtering sikvo---
+
+--amra ekane get korchi jei student gola 1tar besi course korche tader ke 
+select course, count(*)
+from students
+group by course
+having count(*) > 1;
+
+--countries where avarage student age is grater than 21
+
+select country, avg(age) from students group by country having avg(age) > 20; 
