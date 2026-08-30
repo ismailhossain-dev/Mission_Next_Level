@@ -174,3 +174,19 @@ select * from posts as p join users as u on p.user_id = u.id;
 
 --jodi amra users id null dei posts table tahole amra join diye data get korle sei data dive na easy vabe bolle null value dei na
  select * from posts as p inner join users as u on p.user_id= u.id; 
+
+
+--V: 11 Right & Full Join-------
+
+--posts holo left join and users holo right join
+select * from posts as p inner join users as u on p.user_id = u.id;
+
+--users holo left table join and posts holo right join table--
+select * from users as u left join posts as p on u.id = p.user_id;  
+
+--right join er kaj holo user_id sathe data na match na korle o data nive and null value bosai dive posts table insert hobe
+select * from users as u right join posts as p on u.id = p.user_id;  
+
+--full join kaj kore  condition jegola mile ei data gola nive and condination na mille o data gola niye asbe and ekane null diye dive
+
+select * from posts full join users on posts.user_id = users.id;
