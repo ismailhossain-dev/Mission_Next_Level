@@ -314,3 +314,17 @@
  Method --> GET --> Time 1787674040262 --> URL --> /api/user 
 
  Method --> GET --> Time 1787674954171 --> URL --> /api/user 
+
+ Method --> GET --> Time 1788342924359 --> URL --> / 
+
+ Method --> GET --> Time 1788342924590 --> URL --> /favicon.ico 
+
+ Method --> GET --> Time 1788342926761 --> URL --> / 
+
+ Method --> GET --> Time 1788342930470 --> URL --> /users 
+
+ Method --> GET --> Time 1788342932592 --> URL --> /users 
+
+ Method --> GET --> Time 1788342950144 --> URL --> /api/user 
+
+ Method --> GET --> Time 1788342952243 --> URL --> /api/user 
