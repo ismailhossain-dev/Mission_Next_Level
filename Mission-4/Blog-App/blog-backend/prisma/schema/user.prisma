@@ -10,7 +10,7 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     //Profliel? Stands for one to one relation with Profile model 
-    profileId Profile? 
+    profile Profile? 
     //table name rename use @@
     @@map("users")
 }
