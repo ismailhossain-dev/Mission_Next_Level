@@ -1,0 +1,9 @@
+generator client {
+  provider = "prisma-client"
+  //../../ use korar karon holo 2 ta generated folder hoyte jaitese tai amra bole ditese ekta foler hobe bahire
+  output   = "../../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}

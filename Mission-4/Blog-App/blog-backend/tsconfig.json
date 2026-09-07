@@ -17,5 +17,5 @@
   },
   //eta comment jeta hobe src bahir o tsx file takle error dive 
   // "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/generated/prisma"]
+  "exclude": ["node_modules", "dist"]
 }
