@@ -8,7 +8,7 @@ const loginUser = async (payload: ILoginUser) => {
   const { email, password } = payload;
   console.log(email, password);
   //steo-1: user isExist in db
-  const user = await prisma.user.findFirstOrThrow({
+  const user = await prisma.user.findUniqueOrThrow({
     where: { email },
   });
 

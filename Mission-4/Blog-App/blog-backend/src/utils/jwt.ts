@@ -8,6 +8,20 @@ const createToken = (payload:JwtPayload, screct:string, expiresIn:SignOptions)=>
     return token;
 }
 
+
+//verify token 
+
+const verifyToken = (token: string , screct: string) => {
+   try {
+     const verifedToken = jwt.verify(token, screct)
+    return verifedToken;
+   } catch (error:any) {
+    console.log("Token verification failed", error)
+    throw new Error(error.message)
+   }
+}
+
 export const jwtUtils ={
-    createToken
+    createToken,
+    verifyToken
 }

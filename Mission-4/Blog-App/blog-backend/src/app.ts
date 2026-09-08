@@ -15,7 +15,7 @@ app.use(
 app.use(express.json());
 //This middleware keeps client data in req.body.
 app.use(express.urlencoded({ extended: true }));
-//This middleware helps keep data in cokkie
+//This middleware help get cokkie data if we don't use cokkie then token undefind (most imporntat)
 app.use(cookieParser());
 app.get("/", async (req: Request, res: Response) => {
   res.send("Hello World!");

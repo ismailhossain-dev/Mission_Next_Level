@@ -62,8 +62,19 @@ const registerUserIntoDB = async (paylaod: ICreateUser) => {
 };
 
 // user will be get between token 
-const getMyprofileFromDB = async() => {
+const getMyprofileFromDB = async(userId: string) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {id: userId},
+    omit: {
+      password: true //password ta response e dekabe na
+    },
+    //profile ta get kkorchi
+    include: {
+      profile: true
+    }
+  })
 
+  return user
 }
 
 export const userService = {
