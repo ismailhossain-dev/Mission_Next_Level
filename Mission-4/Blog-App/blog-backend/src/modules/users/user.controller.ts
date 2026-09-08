@@ -25,19 +25,22 @@ const registerUser = catechAsync(
 
 const getMyprofile = catechAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    //auth.controlle.ts e cokkie set korchi seta ekane access korbo
-    const { accessToken } = req.cookies;
+    //eta user.route.ts teke
+    // console.log("req.user", req.user)
+    //auth.controlle.ts e cokkie set korchi seta ekane access korchi
+    // const { accessToken } = req.cookies;
     //token verify & convert decoded
     //error handle korar jonno jwt te verify korechi jwtUtils er morde
-    const verifiedToken = jwtUtils.verifyToken(
-      accessToken,
-      config.jwt_access_secret,
-    );
-    //eta use korel verifyToken.id err ta chole jabe
-    if (typeof verifiedToken === "string") {
-      throw new Error(verifiedToken);
-    }
-    const proifle = await userService.getMyprofileFromDB(verifiedToken.id);
+    // const verifiedToken = jwtUtils.verifyToken(
+    //   accessToken,
+    //   config.jwt_access_secret,
+    // );
+    // //eta use korel verifyToken.id err ta chole jabe
+    // if (typeof verifiedToken === "string") {
+    //   throw new Error(verifiedToken);
+    // }
+    const proifle = await userService.getMyprofileFromDB(req.user?.id as string);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
