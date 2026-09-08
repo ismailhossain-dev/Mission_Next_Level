@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import httpStatus from "http-status";
 import { userService } from "./user.service";
 import { catechAsync } from "../../utils/catechAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
 
 // const createUser = async (req: Request, res: Response) => {
@@ -29,11 +30,18 @@ import { catechAsync } from "../../utils/catechAsync";
 const registerUser = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
   const payload = req.body; 
   const user = await userService.registerUserIntoDB(payload)
-  res.status(httpStatus.CREATED).json({
-     success: true,
-      statusCode: httpStatus.CREATED,
-      message: "User registred successfully",
-      data: {user},
+  // res.status(httpStatus.CREATED).json({
+  //    success: true,
+  //     statusCode: httpStatus.CREATED,
+  //     message: "User registred successfully",
+  //     data: {user},
+  // })
+
+  sendResponse(res, {
+    success:true,
+    statusCode:httpStatus.CREATED,
+    message:"User registered successfully",
+    data: {user}
   })
 })
 export const userContoller = {
