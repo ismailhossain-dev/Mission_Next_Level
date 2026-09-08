@@ -3,6 +3,7 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
 import { userRoutes } from "./modules/users/user.route";
+import { authRoutes } from "./modules/auth/auth.route";
 const app: Application = express();
 app.use(
   cors({
@@ -17,10 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 //This middleware helps keep data in cokkie
 app.use(cookieParser());
 app.get("/", async (req: Request, res: Response) => {
-  // const user = await prisma.user.findMany();
-  // console.log(user)
   res.send("Hello World!");
 });
 
 app.use("/api/users", userRoutes)
+app.use("/api/auth", authRoutes)
 export default app;
