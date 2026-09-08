@@ -11,10 +11,6 @@ const loginUser = async (payload: ILoginUser) => {
   const user = await prisma.user.findFirstOrThrow({
     where: { email },
   });
-  //==!user eta use kora lagbe na findFirstOrThrow automatic ei kaj ta kore felbe
-  //  if(!user){
-  //     throw new Error("User not found")
-  //  }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
@@ -55,3 +51,4 @@ const loginUser = async (payload: ILoginUser) => {
 export const authService = {
   loginUser,
 };
+

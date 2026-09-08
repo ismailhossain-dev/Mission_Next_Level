@@ -16,6 +16,13 @@ const registerUser = catechAsync(async (req:Request, res:Response, next:NextFunc
     data: {user}
   })
 })
+
+
+
+//// user will be get between token 
+
+const getMyprofile = ()=> {}
 export const userContoller = {
   registerUser,
+  getMyprofile
 };

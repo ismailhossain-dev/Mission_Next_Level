@@ -61,6 +61,12 @@ const registerUserIntoDB = async (paylaod: ICreateUser) => {
   return user;
 };
 
+// user will be get between token 
+const getMyprofileFromDB = async() => {
+
+}
+
 export const userService = {
   registerUserIntoDB,
+  getMyprofileFromDB
 };
