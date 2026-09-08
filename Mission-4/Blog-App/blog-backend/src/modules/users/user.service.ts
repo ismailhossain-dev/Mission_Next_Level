@@ -3,7 +3,7 @@ import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { ICreateUser } from "./user.interface";
 
-const createUserIntoDB = async (paylaod: ICreateUser) => {
+const registerUserIntoDB = async (paylaod: ICreateUser) => {
   const { name, email, password, profilePhoto } = paylaod;
   const isUserExist = await prisma.user.findUnique({
     where: {
@@ -26,16 +26,22 @@ const createUserIntoDB = async (paylaod: ICreateUser) => {
       name,
       email,
       password: hashPassword,
-    },
+      profile: {
+        create:{
+          profilePhoto
+        }
+      }
+    }, 
   });
 
+  //ei kaj createdUser vitor o kora jai
   //after user created then create profile
-  await prisma.profile.create({
-    data: {
-      userId: createdUser.id,
-      profilePhoto,
-    },
-  });
+  // await prisma.profile.create({
+  //   data: {
+  //     userId: createdUser.id,
+  //     profilePhoto,
+  //   },
+  // });
 
   //user get for watch response
   const user = await prisma.user.findUnique({
@@ -56,5 +62,5 @@ const createUserIntoDB = async (paylaod: ICreateUser) => {
 };
 
 export const userService = {
-  createUserIntoDB,
+  registerUserIntoDB,
 };
