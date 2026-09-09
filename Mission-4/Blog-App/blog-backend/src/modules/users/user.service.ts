@@ -27,11 +27,11 @@ const registerUserIntoDB = async (paylaod: ICreateUser) => {
       email,
       password: hashPassword,
       profile: {
-        create:{
-          profilePhoto
-        }
-      }
-    }, 
+        create: {
+          profilePhoto,
+        },
+      },
+    },
   });
 
   //ei kaj createdUser vitor o kora jai
@@ -61,23 +61,57 @@ const registerUserIntoDB = async (paylaod: ICreateUser) => {
   return user;
 };
 
-// user will be get between token 
-const getMyprofileFromDB = async(userId: string) => {
+// user will be get between token
+const getMyprofileFromDB = async (userId: string) => {
   const user = await prisma.user.findUniqueOrThrow({
-    where: {id: userId},
+    where: { id: userId },
     omit: {
-      password: true //password ta response e dekabe na
+      password: true, //password ta response e dekabe na
     },
     //profile ta get kkorchi
     include: {
-      profile: true
-    }
-  })
+      profile: true,
+    },
+  });
 
-  return user
-}
+  return user;
+};
+
+//update my profile
+//user teke 2ta information nivo 1.userId 2.payload mane se ki update korte chai
+
+const updateMyProfileInDB = async (userId: string, paylaod: any) => {
+  //name , email for user and  profilePhoto, bio for profile
+  const { name, email, profilePhoto, bio } = paylaod;
+  //user ta ache kina eta check kore middleware/auth.ts a
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      name,
+      email,
+
+      profile: {
+        update: {
+          profilePhoto,
+          bio,
+        },
+      },
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      profile: true,
+    },
+  });
+
+  return updatedUser;
+};
 
 export const userService = {
   registerUserIntoDB,
-  getMyprofileFromDB
+  getMyprofileFromDB,
+  updateMyProfileInDB,
 };

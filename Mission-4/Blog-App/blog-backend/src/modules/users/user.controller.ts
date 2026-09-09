@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 //asyc is a req, res function
+//catechAsync handle erro response
 const registerUser = catechAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -50,7 +51,24 @@ const getMyprofile = catechAsync(
   },
 );
 
+
+//update my profile 
+const updateMyProfile = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+  //eta middleware/auth.ts teke access korchi
+  const id = req.user?.id as string;
+  const paylaod = req.body; 
+  const updatedProfile = await userService.updateMyProfileInDB(id, paylaod)
+
+  sendResponse(res, {
+    statusCode: 200,
+    success:true,
+    message: "User profile updated successfully",
+    data: updateMyProfile
+  })
+})
+
 export const userContoller = {
   registerUser,
   getMyprofile,
+  updateMyProfile
 };
