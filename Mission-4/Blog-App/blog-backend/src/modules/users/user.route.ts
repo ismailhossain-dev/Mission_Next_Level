@@ -30,6 +30,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     //authorization work
     const { accessToken } = req.cookies;
+    // Token verify
     const verifiedToken = jwtUtils.verifyToken(
       accessToken,
       config.jwt_access_secret,
@@ -41,11 +42,9 @@ router.get(
     const { name, email, id, role } = verifiedToken;
 
     //Role comming in prisma
-    //user role default jeta takle and seta jodi hoi tokon response ta dekabe
-    //role jodi user hoi and Role.USER eta na dei tahole user user er res dekte parbe na
     const requiredRoles = [Role.ADMIN, Role.AUTHOR, Role.USER];
 
-    //array er ekti includes method ache
+    //array er ekti includes method ache and role na matech na korle
     if (!requiredRoles.includes(role)) {
       return res.status(403).json({
         success: false,
