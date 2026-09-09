@@ -14,10 +14,17 @@ const createToken = (payload:JwtPayload, screct:string, expiresIn:SignOptions)=>
 const verifyToken = (token: string , screct: string) => {
    try {
      const verifedToken = jwt.verify(token, screct)
-    return verifedToken;
+     //verify token ta hoye gele ekta object return korchi
+    return {
+        success: true, 
+        data:verifedToken
+    };
    } catch (error:any) {
     console.log("Token verification failed", error)
-    throw new Error(error.message)
+    return {
+        success: false,
+        error:error.message
+    }
    }
 }
 
