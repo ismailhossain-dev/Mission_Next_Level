@@ -4,4 +4,7 @@ import { authController } from "./auth.controlle";
 const router = Router();
 
 router.post("/login", authController.loginUser)
+
+//Refresh Token implement
+router.post("/refresh-token", authController.refreshToken)
 export const authRoutes = router; 

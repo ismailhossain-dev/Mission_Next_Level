@@ -1,5 +1,5 @@
 //Higher order function used for catech response
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, RequestHandler, response, Response } from "express";
 import httpStatus from "http-status"
 export const catechAsync = (fn:RequestHandler)=> {
   return async (req:Request, res:Response, next:NextFunction)=> {
@@ -11,13 +11,10 @@ export const catechAsync = (fn:RequestHandler)=> {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
         statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-        message: "Failed to register user",
+        message: error.message,
         error:(error as Error).message
     })
   }
   }
 }
-
-
-
 

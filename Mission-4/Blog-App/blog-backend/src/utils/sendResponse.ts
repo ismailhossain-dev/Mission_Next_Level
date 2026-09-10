@@ -9,7 +9,7 @@ type TResponseData<T> = {
   success: boolean;
   statusCode: number;
   message: string;
-  //data type ta dynamic hobe tai amra generic type use korbo
+  //generic data type user dynamic response
   data: T;
   //meta is optional data type
   meta?: Tmeta;

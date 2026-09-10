@@ -41,6 +41,30 @@ const loginUser = catechAsync(
   },
 );
 
+////refershToker er kaj holo notun kore ekta accessToken create kore user ke diye deowa
+const refreshToken = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+const refreshToken = req.cookies.refreshToken;
+//console.log(refreshToken)
+//server kichi destructuring korle await use korte hobe
+const {accessToken} = await authService.refreshToken(refreshToken)
+
+res.cookie("accessToken", accessToken, {
+  httpOnly: true, 
+  secure: true,
+  sameSite: "none",
+  maxAge: 1000 *60 *60 * 24 // 1day
+})
+
+sendResponse(res, {
+  success: true,
+  statusCode: httpStatus.OK,
+  message: "Token refreshed successfully",
+  data: {accessToken}
+})
+})
+
 export const authController = {
   loginUser,
+
+  refreshToken
 };
