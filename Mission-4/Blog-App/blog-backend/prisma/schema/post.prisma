@@ -1,0 +1,24 @@
+model Post {
+    id String @id @default(cuid())
+    title String @db.VarChar(255)
+    content String @db.Text
+    thumbnail String?
+    isFeatured Boolean @default(false)
+    status PostStatus @default(PUBLISHED)
+    tags String[]
+    views Int @default(0)
+    createAt DateTime @default(now())
+    updateAt DateTime @updatedAt
+    //1 to many relation like ekta user onek gola comment korte parbe
+    comments Comment[]
+
+    authorId String
+    //post er sathe user er relation kora hoitese
+    author User @relation(fields: [authorId],references: [id], onDelete: Cascade)
+    
+    @@index([authorId])
+    @@map("posts")
+}
+
+
+

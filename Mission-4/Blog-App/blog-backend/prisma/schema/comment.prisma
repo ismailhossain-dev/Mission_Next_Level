@@ -1,0 +1,19 @@
+model  Comment {
+    id String @id @default(uuid())
+    content String @db.VarChar(255)
+    authorId String
+    //relation with user & if we are delete post automatically delete comment
+    author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    postId String
+    //ekane ekta erro asbe and eta chole jabe Post model Comment ta add kore dile 
+    post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+    //ulta pla comment korle reject kore divo 
+    status CommentStatus @default(APPROVE)
+
+    createAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    //postId দিয়ে comments বের করার কাজ দ্রুত করার জন্য @@index([postId]) খুব useful।
+    @@index([postId])
+    @@index([authorId])
+    @@map("comment")
+}

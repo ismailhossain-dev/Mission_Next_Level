@@ -9,8 +9,13 @@ model User {
     role Role @default(USER)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    //Profliel? Stands for one to one relation with Profile model 
+    //1 to 1 relation like ekta user ekta profile korte parbe 
     profile Profile? 
+    //1 to many relation ekta user onek gola comment korte parbe
+    comments Comment[]
+
+    //1 to many 
+    posts Post[]
     //table name rename use @@
     @@map("users")
 }
