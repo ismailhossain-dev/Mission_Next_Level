@@ -3,32 +3,65 @@ import { ICreatePostPayload } from "./post.interface";
 
 //user multiple post korte parbe
 //userId ta middleware/auth.ts teke pabo
-const createPost = async(payload:ICreatePostPayload, userId: string) => {
+const createPost = async (payload: ICreatePostPayload, userId: string) => {
   const result = await prisma.post.create({
     data: {
-        ...payload,
-        //post ta kon user e create korche seta janar jonno authorId lagbe
-        authorId: userId
-    }
-  })
-  return result; 
+      ...payload,
+      //post ta kon user e create korche seta janar jonno authorId lagbe
+      authorId: userId,
+    },
+  });
+  return result;
 };
 
-const getAllPosts = async() => {
+//ekane user er post and comment er data goa niye asbo
+const getAllPosts = async () => {
   const posts = await prisma.post.findMany({
     include: {
       author: {
         omit: {
-          password: true
-        }
+          password: true,
+        },
       },
-      comments: true
-    }
-  })
-  return posts; 
+      comments: true,
+    },
+  });
+  return posts;
 };
 
-const getPostById = () => {};
+//=======most important api =========
+const getPostById = async (postId: string) => {
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+  });
+
+  //post count update
+
+  const updatedPost = await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    //ekane bolvo amra ki updat korte chai
+    data: {
+      //increment ta kaj korbe jokon data type number takbe
+      views: {
+        //increment ekta express er function
+        increment: 1,
+      },
+    },
+    include: {
+      author: {
+        omit: {
+          password: true,
+        },
+      },
+      comments: true,
+    },
+  });
+  return updatedPost;
+};
 
 const updatePost = () => {};
 
@@ -36,7 +69,37 @@ const deletePost = () => {};
 
 const getPostsStates = () => {};
 
-const getMyPosts = () => {};
+//login user er id ta holo authorId
+const getMyPosts = async (authorId: string) => {
+  const result = await prisma.post.findMany({
+    where: {
+      authorId,
+    },
+
+    orderBy: {
+      createAt: "desc",
+    },
+
+    include: {
+      comments: true,
+
+      author: {
+        omit: {
+          password: true,
+        },
+      },
+
+      //eta mardome amra sorting kori 
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
 
 export const postService = {
   createPost,

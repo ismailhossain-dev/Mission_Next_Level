@@ -23,12 +23,44 @@ const getAllPosts = catechAsync(async(req:Request, res:Response, next:NextFuncti
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: "Get retrived successfully",
+        message: "All Post Retrived Successfully",
         data: result
     })
 })  
-const getMyPosts = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {})
-const getPostById = catechAsync((req:Request, res:Response, next:NextFunction)=> {})
+
+const getMyPosts = catechAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // Get the user ID from auth middleware
+    const authorId = req.user?.id;
+
+    // Get all posts created by the logged-in user
+    const result = await postService.getMyPosts(authorId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My Posts Retrieved Successfully",
+      data: result,
+    });
+  }
+);
+
+
+const getPostById = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+    const {postId} = req.params; 
+    //id na takle user ke basai patai divo 
+    if(!postId){
+        throw new Error("Post Id Required In Params")
+    }
+   const result = await postService.getPostById(postId as string);
+
+   sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Single Post Retrived Successfully",
+    data: result
+   })
+})
 const updatePost = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {})
 const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {})
 
