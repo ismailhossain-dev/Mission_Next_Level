@@ -63,22 +63,43 @@ const getPostById = catechAsync(async(req:Request, res:Response, next:NextFuncti
 })
 const updatePost = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
     console.log("hello")
-    const {postId} = req.params; 
+    const postId = req.params.postId; 
+     if(!postId){
+        throw new Error("Post Id Required In Params")
+    }
     const payload = req.body; 
     const authorId = req.user?.id; 
     const isAdmin = req.user?.role === "ADMIN"; 
-    const result = await postService.updatePost(postId as string, payload, authorId as string, isAdmin)
+     await postService.updatePost(postId as string, payload, authorId as string, isAdmin)
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: "Post Updated Successfully",
-        data: result
+        //delete hole response dekabo na
+        data: null
     })
 })
 
 
-const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {})
+const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+    const postId = req.params.postId;
+    if(!postId){
+        throw new Error("Post Id Required In Params")
+    }
+    const authorId = req.user?.id;
+    const isAdmin = req.user?.role === "ADMIN";
+
+    const result = await postService.deletePost(postId as string, authorId as string, isAdmin)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Post delete successfully!",
+        data: result
+    })
+
+})
 
 
 const getPostsState = ()=> {}

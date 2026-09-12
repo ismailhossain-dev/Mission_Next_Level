@@ -69,8 +69,8 @@ const updatePost = async (
   authorId: string,
   isAdmin: boolean,
 ) => {
-//update korar jonno postId and authorId match korte hobe
-  console.log("postId", postId , "authorId", authorId , "isAdmin", isAdmin)
+  //update korar jonno postId and authorId match korte hobe
+  //console.log("postId", postId, "authorId", authorId, "isAdmin", isAdmin);
   const post = await prisma.post.findUniqueOrThrow({
     where: {
       id: postId,
@@ -103,7 +103,40 @@ const updatePost = async (
   return result;
 };
 
-const deletePost = () => {};
+//update er moto delete api ta hobe.
+
+const deletePost = async (
+  postId: string,
+  authorId: string,
+  isAdmin: boolean,
+) => {
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!isAdmin && post.authorId !== authorId) {
+    throw new Error("You are not owner of this post!");
+  }
+
+await prisma.post.delete({
+    where: {
+      id: postId,
+    },
+    include: {
+      author: {
+        omit: {
+          password: true,
+        },
+      },
+      comments: true,
+    },
+  });
+
+  //delete hoye jawa post er response deke ki korbo tai null kore disi
+  // return null;
+};
 
 const getPostsStates = () => {};
 
