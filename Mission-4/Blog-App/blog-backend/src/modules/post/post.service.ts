@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { ICreatePostPayload } from "./post.interface";
+import { ICreatePostPayload, IUpdatePostPayload } from "./post.interface";
 
 //user multiple post korte parbe
 //userId ta middleware/auth.ts teke pabo
@@ -63,7 +63,45 @@ const getPostById = async (postId: string) => {
   return updatedPost;
 };
 
-const updatePost = () => {};
+const updatePost = async (
+  postId: string,
+  payload: IUpdatePostPayload,
+  authorId: string,
+  isAdmin: boolean,
+) => {
+//update korar jonno postId and authorId match korte hobe
+  console.log("postId", postId , "authorId", authorId , "isAdmin", isAdmin)
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+  });
+
+  // isAdmin === true → যেকোনো post update করতে পারবে
+  // isAdmin === false + নিজের post → update করতে পারবে
+  // isAdmin === false + অন্যের post → update করতে পারবে না
+  if (!isAdmin && post.authorId !== authorId) {
+    throw new Error("You are not the owner of this post!");
+  }
+
+  const result = await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: payload,
+    include: {
+      //author er vitor user ta pabo
+      author: {
+        omit: {
+          password: true,
+        },
+      },
+      comments: true,
+    },
+  });
+
+  return result;
+};
 
 const deletePost = () => {};
 
@@ -89,7 +127,7 @@ const getMyPosts = async (authorId: string) => {
         },
       },
 
-      //eta mardome amra sorting kori 
+      //eta mardome amra sorting kori
       _count: {
         select: {
           comments: true,

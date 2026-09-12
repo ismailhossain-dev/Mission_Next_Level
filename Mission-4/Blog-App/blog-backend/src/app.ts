@@ -26,5 +26,5 @@ app.get("/", async (req: Request, res: Response) => {
 app.use("/api/users", userRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/posts", postRoute)
-app.use("api/comments", commentRoute)
+app.use("/api/comments", commentRoute)
 export default app;

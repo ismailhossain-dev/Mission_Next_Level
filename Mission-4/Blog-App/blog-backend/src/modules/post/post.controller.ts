@@ -61,7 +61,23 @@ const getPostById = catechAsync(async(req:Request, res:Response, next:NextFuncti
     data: result
    })
 })
-const updatePost = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {})
+const updatePost = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+    console.log("hello")
+    const {postId} = req.params; 
+    const payload = req.body; 
+    const authorId = req.user?.id; 
+    const isAdmin = req.user?.role === "ADMIN"; 
+    const result = await postService.updatePost(postId as string, payload, authorId as string, isAdmin)
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Post Updated Successfully",
+        data: result
+    })
+})
+
+
 const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {})
 
 

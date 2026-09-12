@@ -63,7 +63,7 @@ const updateMyProfile = catechAsync(async (req:Request, res:Response, next:NextF
     statusCode: 200,
     success:true,
     message: "User profile updated successfully",
-    data: updateMyProfile
+    data: updatedProfile
   })
 })
 

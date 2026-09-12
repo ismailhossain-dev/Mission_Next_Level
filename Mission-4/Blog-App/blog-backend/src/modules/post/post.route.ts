@@ -25,13 +25,13 @@ router.get(
 router.get("/:postId", postController.getPostById);
 
 router.patch(
-  "/postId",
+  "/:postId",
   auth(Role.ADMIN, Role.USER, Role.ADMIN),
   postController.updatePost,
 );
 
 router.delete(
-  "/postId",
+  "/:postId",
   auth(Role.USER, Role.ADMIN, Role.AUTHOR),
   postController.deletePost,
 );
