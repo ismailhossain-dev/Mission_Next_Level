@@ -33,18 +33,22 @@ const loginUser = catchAsync(
   },
 );
 
-// const refreshToken = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
-//     const result = await authService.refreshToken(req.body);
+//etar kaj holo accesToken 1 day por chnage kore data barano
+const refreshToken = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
+    const refreshToken =req.cookies.refreshToken;
+    const {accessToken} = await authService.refreshToken(refreshToken);
 
-//     sendResponse(res, {
-//         success: true,
-//         statusCode: httpStatus.OK,
-//         message: "Token refreshed successfully",
-//         data: result
-//     })
-// })
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Token refreshed successfully",
+        data: {
+            accessToken
+        }
+    })
+})
 
 export const authController = {
-  loginUser
-//   refreshToken,
+  loginUser,
+  refreshToken
 };

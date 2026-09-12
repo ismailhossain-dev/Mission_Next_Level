@@ -13,7 +13,7 @@ const createToken = (
   return token;
 };
 
-//verify token
+//verify token & decoded token
 
 const verifyToken = (token: string, secret: string) => {
   try {
