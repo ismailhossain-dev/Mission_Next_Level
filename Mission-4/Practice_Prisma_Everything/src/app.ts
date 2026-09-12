@@ -3,6 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import config from "./config";
 import { userRoutes } from "./modules/users/user.route";
+import { authRoute } from "./modules/auth/auth.route";
 const app = express();
 app.use(cors({
     origin: config.app_url,
@@ -22,6 +23,6 @@ app.get('/', (req:Request, res:Response) => {
 
 
 app.use("/api/users", userRoutes)
-
+app.use("/api/auth", authRoute)
 
 export default app; 

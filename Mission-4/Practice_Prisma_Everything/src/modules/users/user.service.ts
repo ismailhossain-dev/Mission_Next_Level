@@ -51,6 +51,7 @@ const regiterUserInDB = async (payload: IuserPayload) => {
   return user;
 };
 
+
 export const userService = {
   regiterUserInDB,
 };
