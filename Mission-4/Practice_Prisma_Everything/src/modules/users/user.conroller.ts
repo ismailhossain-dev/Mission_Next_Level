@@ -14,7 +14,20 @@ const regiterUser = catchAsync(async(req:Request, res:Response, next:NextFunctio
     })
 })
 
+const getMyProfile  = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
+        const result = await userService.getMyprofileFromDB(req.user?.id as string)
+
+        sendResponse(res,{
+            success: true, 
+            statusCode: htttpStatus.OK,
+            message: "User profie retrived successfully",
+            data: result
+        })
+
+})
+
 
 export const userController ={
-    regiterUser
+    regiterUser,
+    getMyProfile
 }

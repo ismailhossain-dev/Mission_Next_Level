@@ -11,7 +11,7 @@ const regiterUserInDB = async (payload: IuserPayload) => {
     },
   });
 
-    if (isUserExist) {
+  if (isUserExist) {
     throw new Error("User with this email already exists");
   }
 
@@ -51,7 +51,26 @@ const regiterUserInDB = async (payload: IuserPayload) => {
   return user;
 };
 
+const getMyprofileFromDB = async (userId: string) => {
+  if (!userId) {
+    throw new Error("UserId not found");
+  }
+  const result = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      profile: true,
+    },
+  });
+
+  return result; 
+};
 
 export const userService = {
   regiterUserInDB,
+  getMyprofileFromDB,
 };

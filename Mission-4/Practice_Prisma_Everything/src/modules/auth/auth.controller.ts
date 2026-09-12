@@ -33,7 +33,7 @@ const loginUser = catchAsync(
   },
 );
 
-//etar kaj holo accesToken 1 day por chnage kore data barano
+//etar kaj holo accesToken 1 day por chnage kore date barano
 const refreshToken = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const refreshToken =req.cookies.refreshToken;
     const {accessToken} = await authService.refreshToken(refreshToken);
