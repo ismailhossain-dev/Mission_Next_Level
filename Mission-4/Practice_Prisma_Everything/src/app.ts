@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors"
 import cookieParser from "cookie-parser";
 import config from "./config";
+import { userRoutes } from "./modules/users/user.route";
 const app = express();
 app.use(cors({
     origin: config.app_url,
@@ -19,6 +20,8 @@ app.get('/', (req:Request, res:Response) => {
   })
 });
 
+
+app.use("/api/users", userRoutes)
 
 
 export default app; 
