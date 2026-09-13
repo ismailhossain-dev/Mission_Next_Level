@@ -4,3 +4,10 @@ export interface IuserPayload {
   password: string;
   profilePhoto: string;
 }
+
+
+export interface IUpdateProfilePayload {
+  name?: string,
+  profilePhoto?: string,
+  bio?:string
+}
