@@ -9,3 +9,7 @@ enum Role {
     USER
 }
 
+enum PostStatus {
+    PUBLISHED
+    REJECTED
+}

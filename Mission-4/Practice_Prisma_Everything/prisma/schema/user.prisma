@@ -9,5 +9,6 @@ model User {
     updatedAt DateTime @updatedAt
     //1 to many
     profile Profile?
+    posts Post[]
     @@map("users")
 }
