@@ -424,12 +424,29 @@ DATABASE_URL="postgresql://username:password@host:5432/database"
 `.env`:
 
 ```env
-DATABASE_URL="your_database_connection_string"
+DATABASE_URL
+→ PostgreSQL database-এর connection string
 
-JWT_ACCESS_SECRET="your_access_secret"
-JWT_REFRESH_SECRET="your_refresh_secret"
+PORT
+→ Backend server কোন port-এ চলবে
 
-BCRYPT_SALT_ROUNDS=10
+APP_URL
+→ Frontend application-এর URL
+
+BCRYPT_SALT_ROUNDS
+→ Password hash করার security level
+
+JWT_ACCESS_SECRET
+→ Access token sign/verify করার secret
+
+JWT_REFRESH_SECRET
+→ Refresh token sign/verify করার secret
+
+JWT_ACCESS_EXPIRES_IN
+→ Access token কতদিন valid থাকবে
+
+JWT_REFRESH_EXPIRES_IN
+→ Refresh token কতদিন valid থাকবে
 ```
 
 ---
