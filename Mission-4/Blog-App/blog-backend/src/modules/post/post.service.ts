@@ -48,6 +48,9 @@ const getPostById = async (postId: string) => {
   //eta deyar karon holo error hole o count bere jaitese so eta solve korbo 
   // throw new Error("Fake Error")
 
+  //✔️✔️Transaction => 1 ta function er sob query jodi success hoi tokon potiti query chnages ektsathe korbe otherwase ekta o change korbe na
+   
+//Rollback => 
   const post = await prisma.post.findUniqueOrThrow({
     where: {
       id: postId,
@@ -59,14 +62,13 @@ const getPostById = async (postId: string) => {
           password: true
         }
       },
-      //if we are use comments: true then gave all rejected and approve comment
       // comments: true
       //If we are want to just approve comemnt 
       comments: {
         where: {
           status: CommentStatus.APPROVE
         },
-        //sorting comemnt
+        //sorting comemnt latest 
         orderBy: {
           createAt: "desc"
         }
