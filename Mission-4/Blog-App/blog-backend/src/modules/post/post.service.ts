@@ -1,3 +1,4 @@
+import { CommentStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { ICreatePostPayload, IUpdatePostPayload } from "./post.interface";
 
@@ -31,36 +32,55 @@ const getAllPosts = async () => {
 
 //=======most important api =========
 const getPostById = async (postId: string) => {
-  const post = await prisma.post.findUniqueOrThrow({
-    where: {
-      id: postId,
-    },
-  });
-
-  //post count update
-
+  // we are want to update first views then update post content
   const updatedPost = await prisma.post.update({
     where: {
       id: postId,
     },
-    //ekane bolvo amra ki updat korte chai
+
     data: {
-      //increment ta kaj korbe jokon data type number takbe
       views: {
-        //increment ekta express er function
         increment: 1,
       },
     },
+  });
+
+  //eta deyar karon holo error hole o count bere jaitese so eta solve korbo 
+  // throw new Error("Fake Error")
+
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+    //incoude use for join table and response
     include: {
       author: {
         omit: {
-          password: true,
-        },
+          password: true
+        }
       },
-      comments: true,
-    },
+      //if we are use comments: true then gave all rejected and approve comment
+      // comments: true
+      //If we are want to just approve comemnt 
+      comments: {
+        where: {
+          status: CommentStatus.APPROVE
+        },
+        //sorting comemnt
+        orderBy: {
+          createAt: "desc"
+        }
+      },
+
+      //count view 
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
   });
-  return updatedPost;
+  return post;
 };
 
 const updatePost = async (
@@ -120,7 +140,7 @@ const deletePost = async (
     throw new Error("You are not owner of this post!");
   }
 
-await prisma.post.delete({
+  await prisma.post.delete({
     where: {
       id: postId,
     },
