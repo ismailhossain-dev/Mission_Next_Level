@@ -102,7 +102,16 @@ const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunctio
 })
 
 
-const getPostsState = ()=> {}
+//this api for admin dashboard
+const getPostsState = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+    const result = await postService.getPostsStates();
+    sendResponse(res, {
+        success: false,
+        statusCode: httpStatus.OK,
+        message: "Post states retrived sucessfully",
+        data: result
+    })
+})
 export const postController={
 createPost,
 getAllPosts,
