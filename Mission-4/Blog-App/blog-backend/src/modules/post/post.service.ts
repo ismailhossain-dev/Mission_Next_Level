@@ -213,66 +213,122 @@ const deletePost = async (
 //===ekane multiple query ache tai $transection use korbo
 const getPostsStates = async () => {
   const transactionResult = await prisma.$transaction(async (tx) => {
-    const totalPost = await tx.post.count();
+    // const totalPost = await tx.post.count();
 
-    const totlaPublishedPosts = await tx.post.count({
-      where: {
-        status: PostStatus.PUBLISHED,
-      },
-    });
-    const totalDraftPosts = await tx.post.count({
-      where: {
-        status: PostStatus.DRAFT,
-      },
-    });
-    const totalArchivedPosts = await tx.post.count({
-      where: {
-        status: PostStatus.ARCHIVED,
-      },
-    });
-
-    const totalComments = await tx.comment.count();
-
-    const totalApprovedComments = await tx.comment.count({
-      where: {
-        status: CommentStatus.APPROVE,
-      },
-    });
-
-    const totalRejectedComments = await tx.comment.count({
-      where: {
-        status: CommentStatus.REJECT,
-      },
-    });
-
-    //all post er total view dekbo
-    //Not a good approach
-    //post er views jodi 5lak or 10 lak hoi tahole onek baje obosta hoye jabe and timeoumt hoye off hoye jabe
-    // const allPosts = await tx.post.findMany();
-    // let totalPostViews = 0;
-    // allPosts.forEach((post) => {
-    //   totalPostViews = totalPostViews + post.views;
+    // const totlaPublishedPosts = await tx.post.count({
+    //   where: {
+    //     status: PostStatus.PUBLISHED,
+    //   },
+    // });
+    // const totalDraftPosts = await tx.post.count({
+    //   where: {
+    //     status: PostStatus.DRAFT,
+    //   },
+    // });
+    // const totalArchivedPosts = await tx.post.count({
+    //   where: {
+    //     status: PostStatus.ARCHIVED,
+    //   },
     // });
 
+    // const totalComments = await tx.comment.count();
 
-    //===good approch==
-    //====totalView ta prisma aggregation er mardome count korb== 
-    const totalPostViewsAggregate = await tx.post.aggregate({
-      _sum: {
-        views: true
-      }
-    })
+    // const totalApprovedComments = await tx.comment.count({
+    //   where: {
+    //     status: CommentStatus.APPROVE,
+    //   },
+    // });
 
-    const totalPostViews = totalPostViewsAggregate._sum.views;
-    return {
-      totalPost,
-      totlaPublishedPosts,
+    // const totalRejectedComments = await tx.comment.count({
+    //   where: {
+    //     status: CommentStatus.REJECT,
+    //   },
+    // });
+
+    // //all post er total view dekbo
+    // //Not a good approach
+    // //post er views jodi 5lak or 10 lak hoi tahole onek baje obosta hoye jabe and timeoumt hoye off hoye jabe
+    // // const allPosts = await tx.post.findMany();
+    // // let totalPostViews = 0;
+    // // allPosts.forEach((post) => {
+    // //   totalPostViews = totalPostViews + post.views;
+    // // });
+
+    // //===good approch==
+    // //====totalView ta prisma aggregation er mardome count korb==
+    // const totalPostViewsAggregate = await tx.post.aggregate({
+    //   _sum: {
+    //     views: true,
+    //   },
+    // });
+
+    // const totalPostViews = totalPostViewsAggregate._sum.views;
+    // return {
+    //   totalPost,
+    //   totlaPublishedPosts,
+    //   totalDraftPosts,
+    //   totalArchivedPosts,
+    //   totalComments,
+    //   totalApprovedComments,
+    //   totalRejectedComments,
+    //   totalPostViews,
+    // };
+
+    //✔️✔️Good & clean Approch and Promise er madome kajt ta korbo
+
+    const [
+      totalPosts,
+      totalPublishedPosts,
       totalDraftPosts,
       totalArchivedPosts,
       totalComments,
       totalApprovedComments,
       totalRejectedComments,
-      totalPostViews,
+      totalPostViewsAggregate,
+    ] = await Promise.all([
+      await tx.post.count(),
+      await tx.post.count({
+        where: {
+          status: PostStatus.PUBLISHED,
+        },
+      }),
+      await tx.post.count({
+        where: {
+          status: PostStatus.DRAFT,
+        },
+      }),
+      await tx.post.count({
+        where: {
+          status: PostStatus.ARCHIVED,
+        },
+      }),
+      await tx.comment.count(),
+      await tx.comment.count({
+        where: {
+          status: CommentStatus.APPROVE,
+        },
+      }),
+      await tx.comment.count({
+        where: {
+          status: CommentStatus.REJECT,
+        },
+      }),
+      await tx.post.aggregate({
+        _sum: {
+          views: true,
+        },
+      }),
+    ]);
+
+    return {
+      totalPosts,
+      totalPublishedPosts,
+      totalDraftPosts,
+      totalArchivedPosts,
+      totalComments,
+      totalApprovedComments,
+      totalRejectedComments,
+      totalPostViews: totalPostViewsAggregate._sum.views,
     };
   });
 
@@ -319,5 +375,4 @@ export const postService = {
   deletePost,
   getPostsStates,
   getMyPosts,
-  
 };

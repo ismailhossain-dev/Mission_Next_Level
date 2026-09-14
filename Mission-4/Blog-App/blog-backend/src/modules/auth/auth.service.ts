@@ -50,7 +50,7 @@ const loginUser = async (payload: ILoginUser) => {
 };
 
 
-//refershToker er kaj holo notun kore ekta accessToken create kore user ke diye deowa
+//refershToker er kaj holo notun kore ekta accessToken create kore user ke dear jonno
 const refreshToken = async(refreshToken: string)=> {
   //1.refresh token verify
   const verifyedRefreshToken = jwtUtils.verifyToken(refreshToken, config.jwt_refresh_secret)
