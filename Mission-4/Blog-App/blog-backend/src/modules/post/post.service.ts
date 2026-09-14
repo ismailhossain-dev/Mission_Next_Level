@@ -33,56 +33,105 @@ const getAllPosts = async () => {
 //=======most important api =========
 const getPostById = async (postId: string) => {
   // we are want to update first views then update post content
-  const updatedPost = await prisma.post.update({
-    where: {
-      id: postId,
-    },
+  //  await prisma.post.update({
+  //     where: {
+  //       id: postId,
+  //     },
 
-    data: {
-      views: {
-        increment: 1,
-      },
-    },
-  });
+  //     data: {
+  //       views: {
+  //         increment: 1,
+  //       },
+  //     },
+  //   });
 
-  //eta deyar karon holo error hole o count bere jaitese so eta solve korbo 
-  // throw new Error("Fake Error")
+  // //ei function transaction  & rollback use kora hoiche
+  // const post = await prisma.post.findUniqueOrThrow({
+  //   where: {
+  //     id: postId,
+  //   },
+  //   //incoude use for join table and response
+  //   include: {
+  //     author: {
+  //       omit: {
+  //         password: true
+  //       }
+  //     },
+  //     // comments: true
+  //     //If we are want to just approve comemnt
+  //     comments: {
+  //       where: {
+  //         status: CommentStatus.APPROVE
+  //       },
+  //       //sorting comemnt latest
+  //       orderBy: {
+  //         createAt: "desc"
+  //       }
+  //     },
 
-  //✔️✔️Transaction => 1 ta function er sob query jodi success hoi tokon potiti query chnages ektsathe korbe otherwase ekta o change korbe na
-   
-//Rollback => 
-  const post = await prisma.post.findUniqueOrThrow({
-    where: {
-      id: postId,
-    },
-    //incoude use for join table and response
-    include: {
-      author: {
-        omit: {
-          password: true
-        }
-      },
-      // comments: true
-      //If we are want to just approve comemnt 
-      comments: {
+  //     //count view
+  //     _count: {
+  //       select: {
+  //         comments: true
+  //       }
+  //     }
+  //   }
+  // });
+  //   return post;
+
+  //==== transection use ===
+  const transactionResult = await prisma.$transaction(
+    async (tx) => {
+      await tx.post.update({
         where: {
-          status: CommentStatus.APPROVE
+          id: postId,
         },
-        //sorting comemnt latest 
-        orderBy: {
-          createAt: "desc"
-        }
-      },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+      });
+      //error asle er view count barbe na most important
+      // throw new Error("Fake Error")
+      //after update
+      const post = await tx.post.findUniqueOrThrow({
+        where: {
+          id: postId,
+        },
+        include: {
+          author: {
+            omit: {
+              password: true,
+            },
+          },
+          comments: {
+            where: {
+              status: CommentStatus.APPROVE,
+            },
+            orderBy: {
+              createAt: "desc",
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+      });
 
-      //count view 
-      _count: {
-        select: {
-          comments: true
-        }
-      }
-    }
-  });
-  return post;
+      return post;
+    },
+    {
+      //max time 10ms
+      maxWait: 10000,
+      //default time 2ms
+      timeout: 20000,
+    },
+  );
+
+  return transactionResult;
 };
 
 const updatePost = async (
