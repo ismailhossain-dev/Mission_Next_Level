@@ -2,22 +2,38 @@ import { CommentStatus, PostStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { ICreatePostPayload, IUpdatePostPayload } from "./post.interface";
 
-//user multiple post korte parbe
-//userId ta middleware/auth.ts teke pabo
 const createPost = async (payload: ICreatePostPayload, userId: string) => {
   const result = await prisma.post.create({
     data: {
       ...payload,
-      //post ta kon user e create korche seta janar jonno authorId lagbe
       authorId: userId,
     },
   });
   return result;
 };
 
-//ekane user er post and comment er data goa niye asbo
 const getAllPosts = async () => {
   const posts = await prisma.post.findMany({
+    //Fitering 100% exact match
+    // where: {
+    //   title: "My five  Post",
+    //   content: "Ronaldo"
+    // },
+
+    //good approch
+
+    where: {
+      AND: [
+        {
+          title: "My five  Post",
+        },
+        {
+          "content": "Ronaldo"
+        }
+      ],
+    },
+
+    //===
     include: {
       author: {
         omit: {
