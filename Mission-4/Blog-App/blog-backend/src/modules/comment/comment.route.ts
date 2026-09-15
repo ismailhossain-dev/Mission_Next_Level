@@ -13,7 +13,7 @@ router.post(
 
 router.get("/author/:authorId", commentController.getCommetByAuthorId);
 
-router.get("/:commentId", commentController.getCommentsByCommaentId);
+router.get("/:commentId", commentController.getCommentsByPostId);
 
 router.patch(
   "/commentId",
