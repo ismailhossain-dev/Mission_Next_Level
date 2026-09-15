@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { catechAsync } from "../../utils/catechAsync";
+import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { authService } from "./auth.service";
-const loginUser = catechAsync(
+const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
     //auth.service teke toeken gola destructing kore nitechi
@@ -42,7 +42,7 @@ const loginUser = catechAsync(
 );
 
 ////refershToker er kaj holo notun kore ekta accessToken create kore user ke diye deowa
-const refreshToken = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+const refreshToken = catchAsync(async (req:Request, res:Response, next:NextFunction)=> {
 const refreshToken = req.cookies.refreshToken;
 //console.log(refreshToken)
 //server kichi destructuring korle await use korte hobe

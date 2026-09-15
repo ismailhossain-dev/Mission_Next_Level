@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Role } from "../../generated/prisma/enums";
-import { catechAsync } from "../utils/catechAsync";
+import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
 import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
@@ -22,7 +22,7 @@ declare global {
 
 //Higher order function 
 export const auth = (...requiredRoles: Role[]) => {
-  return catechAsync(
+  return catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       /** ekane 3ta kaj hoitese
        * 1.check korchi cokkie te token ta ache kina

@@ -1,109 +1,135 @@
-import { prisma } from "../../lib/prisma";
-import {
-  ICreateCommentPayload,
-  IUpdateCommentPayload,
-} from "./comment.interfce";
 
-const createComment = async (
-  authorId: string,
-  payload: ICreateCommentPayload,
-) => {
-  //postId diye check kora hoitese database e post ta exist kore kina
-  await prisma.post.findUniqueOrThrow({
-    where: {
-      id: payload.postId,
-    },
-  });
+import { prisma } from "../../lib/prisma"
+import { ICreateCommentPayload, IModerateCommentPayload, IUpdateCommentPayload } from "./comment.interfce"
 
-  const comment = await prisma.comment.create({
-    data: {
-      ...payload,
-      authorId,
-    },
-  });
+const createComment = async (authorId: string, payload: ICreateCommentPayload) => {
+    await prisma.post.findUniqueOrThrow({
+        where: {
+            id: payload.postId
+        }
+    })
 
-  return comment;
-};
+    const comment = await prisma.comment.create({
+        data: {
+            ...payload,
+            authorId
+        },
+        // include:{
+        //     post : true
+        // }
+    })
 
-const getCommetByAuthorId = async (authorId: string) => {
-  if (!authorId) {
-    throw new Error("Author Id not found!!");
-  }
-  //ekta user onek gola comment korte pare
-  const result = await prisma.comment.findMany({
-    where: {
-      authorId,
-    },
-  });
+    return comment
+}
 
-  return result;
-};
+const getCommentByAuthorId = async (authorId: string) => {
+    const comments = await prisma.comment.findMany({
+        where: {
+            authorId
+        },
+        orderBy: { createAt: "desc" },
+        include: {
+            post: {
+                //amra post er id and title niye asbo
+                select: {
+                    id: true,
+                    title: true
+                }
+            }
+        }
+    })
+    return comments
+}
 
-const getCommentsByPostId = async (postId: string) => {
-  const comments = await prisma.comment.findMany({
-    where: {
-      postId,
-    },
-  });
+const getCommentByCommentId = async (postId : string) => {
+    const comment = await prisma.comment.findMany({
+        where: {
+            postId
+        }
+    })
+    return comment
+}
 
-  return comments;
-};
+const updateComment = async (commentId: string, data: IUpdateCommentPayload, authorId: string) => {
+    const commentData = await prisma.comment.findUniqueOrThrow({
+        where: {
+            id: commentId,
+            authorId
+        },
+        select: {
+            id: true
+        }
+    })
 
-const updateComment = async (
-  authorId: string,
-  data: IUpdateCommentPayload,
-  commentId: string,
-) => {
-  //check comment exist in database
+    // if (!commentData) {
+    //     throw new Error("Your provided input is invalid!")
+    // }
 
-  const commentData = await prisma.comment.findUniqueOrThrow({
-    where: {
-      id: commentId,
-    },
-  });
+    const comment =await prisma.comment.update({
+        where: {
+            id: commentId,
+            authorId
+        },
+        data
+    })
 
-  if (!commentData) {
-    throw new Error("Comment not found");
-  }
+    return comment
+}
 
-  //update comment
+const deleteComment = async (commentId: string, authorId: string) => {
+    const commentData = await prisma.comment.findUniqueOrThrow({
+        where: {
+            id: commentId,
+            authorId
+        },
+        select: {
+            id: true
+        }
+    })
 
-  const comment = await prisma.comment.update({
-    where: {
-      id: commentId,
-      authorId,
-    },
-    data,
-  });
+    // if (!commentData) {
+    //     throw new Error("Your provided input is invalid!")
+    // }
 
-  return comment;
-};
+    const comment = await prisma.comment.delete({
+        where: {
+            id: commentData.id
+        }
+    });
 
-const deleteComment = async (authorId: string, commentId: string) => {
-  //check comment exist in database
-  const commentData = await prisma.comment.findUniqueOrThrow({
-    where: {
-      id: commentId,
-      authorId,
-    },
-    //id ta nichi
-    select: {
-      id: true,
-    },
-  });
+    return comment;
+}
 
-  const result = await prisma.comment.delete({
-    where: {
-      id: commentData.id,
-    },
-  });
+const moderateComment = async (id: string, data: IModerateCommentPayload) => {
+    const commentData = await prisma.comment.findUniqueOrThrow({
+        where: {
+            id
+        },
+        select: {
+            id: true,
+            status: true
+        }
+    });
 
-  return result;
-};
+    if (commentData.status === data.status) {
+        throw new Error(`Your provided status (${data.status}) is already up to date.`)
+    }
+
+    const comment = await prisma.comment.update({
+        where: {
+            id
+        },
+        data
+    });
+
+    return comment;
+}
+
 export const commentService = {
-  createComment,
-  getCommetByAuthorId,
-  getCommentsByPostId,
-  updateComment,
-  deleteComment,
-};
+    createComment,
+    getCommentByAuthorId,
+    getCommentByCommentId,
+    updateComment,
+    deleteComment,
+    moderateComment
+}

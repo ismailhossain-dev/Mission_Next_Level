@@ -1,14 +1,14 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import httpStatus from "http-status";
 import { userService } from "./user.service";
-import { catechAsync } from "../../utils/catechAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import jwt from "jsonwebtoken";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
+import { catchAsync } from "../../utils/catchAsync";
 //asyc is a req, res function
-//catechAsync handle erro response
-const registerUser = catechAsync(
+//catchAsync handle erro response
+const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
     const user = await userService.registerUserIntoDB(payload);
@@ -24,7 +24,7 @@ const registerUser = catechAsync(
 
 //// user will be get between token
 
-const getMyprofile = catechAsync(
+const getMyprofile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     //eta user.route.ts teke
     // console.log("req.user", req.user)
@@ -53,7 +53,7 @@ const getMyprofile = catechAsync(
 
 
 //update my profile 
-const updateMyProfile = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+const updateMyProfile = catchAsync(async (req:Request, res:Response, next:NextFunction)=> {
   //eta middleware/auth.ts teke access korchi
   const id = req.user?.id as string;
   const paylaod = req.body; 

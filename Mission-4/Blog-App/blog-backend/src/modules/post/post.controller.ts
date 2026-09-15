@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express"
-import { catechAsync } from "../../utils/catechAsync"
 import { postService } from "./post.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status"
+import { catchAsync } from "../../utils/catchAsync";
 
 //One user can create multiple post
-const createPost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+const createPost = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const id = req.user?.id;
     const paylaod = req.body; 
 
@@ -18,7 +18,7 @@ const createPost = catechAsync(async(req:Request, res:Response, next:NextFunctio
         data: result,
     })
 })
-const getAllPosts = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+const getAllPosts = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const result = await postService.getAllPosts();
     sendResponse(res, {
         success: true,
@@ -28,7 +28,7 @@ const getAllPosts = catechAsync(async(req:Request, res:Response, next:NextFuncti
     })
 })  
 
-const getMyPosts = catechAsync(
+const getMyPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // Get the user ID from auth middleware
     const authorId = req.user?.id;
@@ -46,7 +46,7 @@ const getMyPosts = catechAsync(
 );
 
 
-const getPostById = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+const getPostById = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const {postId} = req.params; 
     //id na takle user ke basai patai divo 
     if(!postId){
@@ -61,7 +61,7 @@ const getPostById = catechAsync(async(req:Request, res:Response, next:NextFuncti
     data: result
    })
 })
-const updatePost = catechAsync(async (req:Request, res:Response, next:NextFunction)=> {
+const updatePost = catchAsync(async (req:Request, res:Response, next:NextFunction)=> {
     console.log("hello")
     const postId = req.params.postId; 
      if(!postId){
@@ -82,7 +82,7 @@ const updatePost = catechAsync(async (req:Request, res:Response, next:NextFuncti
 })
 
 
-const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+const deletePost = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const postId = req.params.postId;
     if(!postId){
         throw new Error("Post Id Required In Params")
@@ -103,7 +103,7 @@ const deletePost = catechAsync(async(req:Request, res:Response, next:NextFunctio
 
 
 //this api for admin dashboard
-const getPostsState = catechAsync(async(req:Request, res:Response, next:NextFunction)=> {
+const getPostsState = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const result = await postService.getPostsStates();
     sendResponse(res, {
         success: false,
