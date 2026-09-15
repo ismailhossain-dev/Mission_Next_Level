@@ -1,5 +1,8 @@
 import { prisma } from "../../lib/prisma";
-import { ICreateCommentPayload } from "./comment.interfce";
+import {
+  ICreateCommentPayload,
+  IUpdateCommentPayload,
+} from "./comment.interfce";
 
 const createComment = async (
   authorId: string,
@@ -33,9 +36,8 @@ const getCommetByAuthorId = async (authorId: string) => {
     },
   });
 
-  return result; 
+  return result;
 };
-
 
 const getCommentsByPostId = async (postId: string) => {
   const comments = await prisma.comment.findMany({
@@ -46,8 +48,62 @@ const getCommentsByPostId = async (postId: string) => {
 
   return comments;
 };
+
+const updateComment = async (
+  authorId: string,
+  data: IUpdateCommentPayload,
+  commentId: string,
+) => {
+  //check comment exist in database
+
+  const commentData = await prisma.comment.findUniqueOrThrow({
+    where: {
+      id: commentId,
+    },
+  });
+
+  if (!commentData) {
+    throw new Error("Comment not found");
+  }
+
+  //update comment
+
+  const comment = await prisma.comment.update({
+    where: {
+      id: commentId,
+      authorId,
+    },
+    data,
+  });
+
+  return comment;
+};
+
+const deleteComment = async (authorId: string, commentId: string) => {
+  //check comment exist in database
+  const commentData = await prisma.comment.findUniqueOrThrow({
+    where: {
+      id: commentId,
+      authorId,
+    },
+    //id ta nichi
+    select: {
+      id: true,
+    },
+  });
+
+  const result = await prisma.comment.delete({
+    where: {
+      id: commentData.id,
+    },
+  });
+
+  return result;
+};
 export const commentService = {
   createComment,
   getCommetByAuthorId,
-  getCommentsByPostId
+  getCommentsByPostId,
+  updateComment,
+  deleteComment,
 };

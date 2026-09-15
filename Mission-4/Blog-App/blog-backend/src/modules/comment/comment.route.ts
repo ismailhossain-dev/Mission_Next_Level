@@ -16,7 +16,7 @@ router.get("/author/:authorId", commentController.getCommetByAuthorId);
 router.get("/:commentId", commentController.getCommentsByPostId);
 
 router.patch(
-  "/commentId",
+  "/:commentId",
   auth(Role.ADMIN, Role.USER, Role.AUTHOR),
   commentController.updateComment,
 );

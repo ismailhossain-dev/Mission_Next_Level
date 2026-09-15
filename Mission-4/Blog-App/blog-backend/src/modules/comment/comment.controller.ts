@@ -46,11 +46,35 @@ const getCommentsByPostId = catechAsync(
   },
 );
 const updateComment = catechAsync(
-  async (req: Request, res: Response, next: NextFunction) => {},
+  async (req: Request, res: Response, next: NextFunction) => {
+    const authorId = req.user?.id;
+    const {commentId} = req.params;
+    const payload = req.body;
+    const result = await commentService.updateComment(authorId as string, payload, commentId as string)
+    sendResponse(res,{
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Comment updated successfully",
+      data:result 
+    })
+  },
 );
 
 const deleteComment = catechAsync(
-  async (req: Request, res: Response, next: NextFunction) => {},
+  async (req: Request, res: Response, next: NextFunction) => {
+    const authorId = req.user?.id;
+    const {commentId} = req.params;
+
+    const result = await commentService.deleteComment(authorId as string, commentId as string)
+
+    sendResponse(res,{
+      success: true,
+      statusCode:httpStatus.OK,
+      message: "Comment deleted successfully!",
+      data: result
+    })
+
+  },
 );
 
 const moderateComment = catechAsync(
