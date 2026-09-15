@@ -14,26 +14,103 @@ const createPost = async (payload: ICreatePostPayload, userId: string) => {
 
 const getAllPosts = async () => {
   const posts = await prisma.post.findMany({
-    //Fitering 100% exact match
+    //filtering / exact  100% match without And Operators
     // where: {
     //   title: "My five  Post",
     //   content: "Ronaldo"
     // },
 
     //good approch
+    //filtering / exact match AND Operators
+    // where: {
+    //   AND: [
+    //     {
+    //       title: "My five  Post",
+    //     },
+    //     {
+    //       content: "Ronaldo",
+    //     },
+    //     {
+    //       tags: {
+    //         equals: ["typescript, prisma, express"],
+    //       },
+    //     },
+    //   ],
+    // },
 
+    //====Searching and pertial match====
+    // mane ekta word match korle o data deka jabe
+
+    // where:{
+    //   title: {
+    //     contains: "Ronaldo",
+    //     mode: "insensitive"
+    //   },
+    //   //X=> not ideal for partial match
+    //   content:{
+    //     contains: "ronaLdo",
+    //     //uppercase and lowercse jetai diye search koruk na kno data pabe
+    //     mode: "insensitive"
+    //   }
+    // },
+
+    //===title ba content jekona ekta kichu match korle data dive =====
+    //=== searching / parcial search with OR operator
+    // where: {
+    //   OR: [
+    //     {
+    //       title: {
+    //         contains: "ronalDO",
+    //         mode: "insensitive",
+    //       },
+    //     },
+
+    //     {
+    //       content: {
+    //         contains: "Ronaldo",
+    //         mode: "insensitive",
+    //       },
+    //     },
+    //   ],
+    // },
+    //===
+
+
+    //===conbining search (OR operator) and filtering(AND operator===
+    //Fiter=>Extact match korte hobe
+    //search=> ekta word match korle o dekabe 
     where: {
+      //filtering & combaind 
+      //searching
       AND: [
         {
-          title: "My five  Post",
+          OR: [
+            {
+              title: {
+                contains: "Ron",
+                mode: "insensitive"
+              },
+              content: {
+                contains: "Ron",
+                mode: "insensitive"
+              }
+            },
+            
+            
+          ]
         },
+        //Filtering exact 100% match hote hobe
         {
-          "content": "Ronaldo"
+          title: "Ronaldo Nazario"
+        }, 
+        {
+          content: "Ronaldo"
         }
-      ],
+      ]
     },
 
-    //===
+    //
+
     include: {
       author: {
         omit: {
