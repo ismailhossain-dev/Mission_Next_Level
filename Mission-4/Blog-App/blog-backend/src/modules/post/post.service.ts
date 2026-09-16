@@ -1,4 +1,5 @@
 import { CommentStatus, PostStatus } from "../../../generated/prisma/enums";
+import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import {
   ICreatePostPayload,
@@ -22,281 +23,85 @@ const getAllPosts = async (query: IPostquery) => {
   const page = query.page ? Number(query.page) : 1;
   //sorting
   const sortBy = query.sortBy ? query.sortBy : "createAt";
-  const sortOrder = query.sortOrder ? query.sortOrder: "desc"
+  const sortOrder = query.sortOrder ? query.sortOrder : "desc";
   //culcolate skip
   const skip = (page - 1) * limit;
-  const posts = await prisma.post.findMany({
-    // ============================================================
-    // Filtering / Exact Match
-    // ============================================================
 
-    // 100% exact match করা যায় AND operator ছাড়াই.
-    // একাধিক field দিলে সব condition match করতে হবে.
+  //optimation sorting
+  let tags = query.tags ? JSON.parse(query.tags as string) : null;
+  const tagsArray = Array.isArray(tags) ? tags : []
 
-    // where: {
-    //   title: "My five Post",
-    //   content: "Ronaldo",
-    // },
-
-    // ============================================================
-    // Filtering / Exact Match with AND Operator
-    // ============================================================
-
-    // AND operator ব্যবহার করে একাধিক exact condition দেওয়া যায়.
-    // প্রতিটি condition 100% match করতে হবে.
-
-    // where: {
-    //   AND: [
-    //     {
-    //       title: "My five Post",
-    //     },
-    //     {
-    //       content: "Ronaldo",
-    //     },
-    //     {
-    //       tags: {
-    //         equals: ["typescript, prisma, express"],
-    //       },
-    //     },
-    //   ],
-    // },
-
-    // ============================================================
-    // Searching / Partial Match
-    // ============================================================
-
-    // Partial match মানে পুরো word বা sentence 100% match না করলেও,
-    // word-এর কিছু অংশ match করলে data পাওয়া যাবে.
-
-    // contains → কোনো word/character-এর অংশ match করে.
-
-    // mode: "insensitive"
-    // → uppercase বা lowercase যেভাবেই search করা হোক,
-    // data পাওয়া যাবে.
-
-    // where: {
-    //   title: {
-    //     contains: "Ronaldo",
-    //     mode: "insensitive",
-    //   },
-    //   content: {
-    //     contains: "ronaldo",
-    //     mode: "insensitive",
-    //   },
-    // },
-
-    // ============================================================
-    // Searching / Partial Match with OR Operator
-    // ============================================================
-
-    // OR operator ব্যবহার করলে title অথবা content-এর যেকোনো একটিতে
-    // search word match করলেই data পাওয়া যাবে.
-
-    // যেখানে title অথবা content-এর মধ্যে "Ronaldo" থাকলেই result আসবে.
-
-    // where: {
-    //   OR: [
-    //     {
-    //       title: {
-    //         contains: "Ronaldo",
-    //         mode: "insensitive",
-    //       },
-    //     },
-    //     {
-    //       content: {
-    //         contains: "Ronaldo",
-    //         mode: "insensitive",
-    //       },
-    //     },
-    //   ],
-    // },
-
-    // ============================================================
-    // Combining Search (OR) + Filtering (AND)
-    // ============================================================
-
-    // এখানে Search এবং Filtering একসাথে ব্যবহার করা হয়েছে.
-    //
-    // Search:
-    // → title অথবা content-এর মধ্যে "Ron" থাকলে match করবে.
-    //
-    // Filtering:
-    // → title এবং content-এর exact match হতে হবে.
-    //
-    // অর্থাৎ:
-    // 1. title অথবা content-এ "Ron" থাকতে হবে.
-    // 2. title = "Ronaldo Nazario" হতে হবে.
-    // 3. content = "Ronaldo" হতে হবে.
-
-    // where: {
-    //   AND: [
-    //     {
-    //       OR: [
-    //         {
-    //           title: {
-    //             contains: "Ron",
-    //             mode: "insensitive",
-    //           },
-    //         },
-    //         {
-    //           content: {
-    //             contains: "Ron",
-    //             mode: "insensitive",
-    //           },
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: "Ronaldo Nazario",
-    //     },
-    //     {
-    //       content: "Ronaldo",
-    //     },
-    //   ],
-    // },
-
-    // ============================================================
-    // Pagination
-    // ============================================================
-
-    // Pagination মানে হলো data-কে একসাথে সব না দেখিয়ে,
-    // page অনুযায়ী ভাগ করে দেখানো.
-    //
-    // take → প্রতি page-এ কয়টি data দেখাবো.
-    // skip → কতগুলো data বাদ দিয়ে শুরু করবো.
-    //
-    // Example:
-    //
-    // Page 1:
-    // take: 2
-    // skip: 0
-    //
-    // Page 2:
-    // take: 2
-    // skip: 2
-    //
-    // Page 3:
-    // take: 2
-    // skip: 4
-
-    // ============================================================
-    // Pagination Formula
-    // ============================================================
-
-    // Formula:
-    // skip = (page - 1) * limit
-    //
-    // Example:
-    // page = 4
-    // limit = 1
-    //
-    // skip = (4 - 1) * 1
-    //      = 3
-    //
-    // অর্থাৎ 3টি data skip করে 4th page-এর data দেখাবে.
-    //
-    //
-    // Another Example:
-    //
-    // page = 3
-    // limit = 10
-    //
-    // skip = (3 - 1) * 10
-    //      = 20
-    //
-    // অর্থাৎ প্রথম 20টি data skip করে,
-    // 3rd page-এ পরের 10টি data দেখাবে.
-    //
-    //
-    // Example code:
-    //
-    // const page = 3;
-    // const limit = 10;
-    //
-    // const result = await prisma.post.findMany({
-    //   take: limit,
-    //   skip: (page - 1) * limit,
-    // });
-
-    // ============================================================
-    // Sorting
-    // ============================================================
-
-    // orderBy ব্যবহার করে data ascending বা descending order-এ সাজানো যায়.
-    //
-    // asc  → ছোট থেকে বড় / A থেকে Z
-    // desc → বড় থেকে ছোট / Z থেকে A
-    //
-    // Example:
-
-    // orderBy: {
-    //   createAt: "desc",
-    // },
-
-    // ============================================================
-    // Sorting by Multiple Fields
-    // ============================================================
-
-    // একই value বা একই সময়ের একাধিক data থাকলে,
-    // multiple field দিয়ে sorting করা যায়.
-    //
-    // প্রথম field অনুযায়ী sorting হবে.
-    // তারপর একই value হলে পরের field দিয়ে sorting হবে.
-
-    // orderBy: [
-    //   {
-    //     createAt: "desc",
-    //   },
-    //   {
-    //     title: "asc",
-    //   },
-    //   {
-    //     content: "desc",
-    //   },
-    // ],
-
-    // ============================================================
-    // Dynamic Sorting
-    // ============================================================
-
-    // User-এর কাছ থেকে জিজ্ঞেস করা যায়:
-    // → কোন field দিয়ে sorting করতে চায়?
-    // → Ascending নাকি Descending order চায়?
-    //
-    // তারপর সেই অনুযায়ী orderBy-এর value দেওয়া যায়.
-
-    //.........Dynamic Pagination & Fitering & Searching..........
-
-    where: {
-      AND: [
-        query.searchTerm
-          ? {
-              OR: [
-                {
-                  title: {
-                    contains: query.searchTerm,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  content: {
-                    contains: query.searchTerm,
-                    mode: "insensitive",
-                  },
-                },
-              ],
-            }
-          : {},
+  console.log(tagsArray, "tags array")
+  const andConditions: PostWhereInput[] = [];
+  if (query.searchTerm) {
+    andConditions.push({
+      OR: [
+        {
+          title: {
+            contains: query.searchTerm,
+            mode: "insensitive",
+          },
+        },
+        {
+          content: {
+            contains: query.searchTerm,
+            mode: "insensitive",
+          },
+        },
       ],
-    },
+    });
+  }
 
-    //limit 10 kore
+  if (query.title) {
+    andConditions.push({
+      title: query.title,
+    });
+  }
+
+  if (query.content) {
+    andConditions.push({
+      content: query.content,
+    });
+  }
+
+  if (query.authorId) {
+    andConditions.push({
+      authorId: query.authorId,
+    });
+  }
+  //truty value
+  if (query.isFeatured) {
+    andConditions.push({
+      isFeatured: Boolean(query.isFeatured),
+    });
+  }
+  //tags ekta match korle o data dive
+  if (query.tags) {
+    andConditions.push({
+      tags: {
+        hasSome: tagsArray,
+      },
+    });
+  }
+
+  if (query.status) {
+    andConditions.push({
+      status: query.status,
+    });
+  }
+
+  //====
+  const posts = await prisma.post.findMany({
+    //Optizing
+    where: {
+      AND: andConditions,
+    },
     take: limit,
     skip: skip,
 
     //sorting....
     orderBy: {
-      [sortBy]: sortOrder
+      [sortBy]: sortOrder,
     },
 
     include: {
