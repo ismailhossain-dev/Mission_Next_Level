@@ -29,9 +29,9 @@ const getAllPosts = async (query: IPostquery) => {
 
   //optimation sorting
   let tags = query.tags ? JSON.parse(query.tags as string) : null;
-  const tagsArray = Array.isArray(tags) ? tags : []
+  const tagsArray = Array.isArray(tags) ? tags : [];
 
-  console.log(tagsArray, "tags array")
+  console.log(tagsArray, "tags array");
   const andConditions: PostWhereInput[] = [];
   if (query.searchTerm) {
     andConditions.push({

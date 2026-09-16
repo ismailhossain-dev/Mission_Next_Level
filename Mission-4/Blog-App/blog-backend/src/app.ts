@@ -1,11 +1,14 @@
 import cookieParser from "cookie-parser";
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
 import { userRoutes } from "./modules/users/user.route";
 import { authRoutes } from "./modules/auth/auth.route";
 import { postRoute } from "./modules/post/post.route";
 import { commentRoutes } from "./modules/comment/comment.route";
+import { notFound } from "./middleware/notFound";
+import httpStatus from "http-status";
+import { globallErrorHanlder } from "./middleware/globallErrorHandler";
 const app: Application = express();
 app.use(
   cors({
@@ -23,8 +26,17 @@ app.get("/", async (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use("/api/users", userRoutes)
-app.use("/api/auth", authRoutes)
-app.use("/api/posts", postRoute)
-app.use("/api/comments", commentRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoute);
+app.use("/api/comments", commentRoutes);
+
+//If api is not found then give me globall error
+app.use(notFound);
+
+//specially req, res function for express
+//this middeware handle full application error globall error handler
+//next function catchAsync er next ta receive korche
+//1 email diye 2 bar register korle error ta dekte pabo etc
+app.use(globallErrorHanlder);
 export default app;
