@@ -3,6 +3,7 @@ import { postService } from "./post.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status"
 import { catchAsync } from "../../utils/catchAsync";
+import { IPostquery } from "./post.interface";
 
 //One user can create multiple post
 const createPost = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
@@ -19,7 +20,15 @@ const createPost = catchAsync(async(req:Request, res:Response, next:NextFunction
     })
 })
 const getAllPosts = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
-    const result = await postService.getAllPosts();
+    //postman teke query ta nitese dynamic filtering and searching and pagination er jonno 
+    //http://localhost:5000/api/posts?title=Ronaldo &content=Ronaldo&searchTerm=Ron&limit=1&page=2&sortBy=createdAt&orderBy=desc
+
+    //? er por value bosale seta amra req.query morder pai and : er por value bosale seta amr req.params er vitor pai
+
+    const query = req.query as IPostquery;
+
+    console.log(query)
+    const result = await postService.getAllPosts(query);
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
