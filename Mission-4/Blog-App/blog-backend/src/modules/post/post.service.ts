@@ -14,13 +14,13 @@ const createPost = async (payload: ICreatePostPayload, userId: string) => {
 
 const getAllPosts = async () => {
   const posts = await prisma.post.findMany({
-    //filtering / exact  100% match without And Operators
+    //........filtering / exact  100% match without And Operators....
     // where: {
     //   title: "My five  Post",
     //   content: "Ronaldo"
     // },
 
-    //good approch
+    //...........good approch............
     //filtering / exact match AND Operators
     // where: {
     //   AND: [
@@ -75,42 +75,67 @@ const getAllPosts = async () => {
     // },
     //===
 
-
     //===conbining search (OR operator) and filtering(AND operator===
     //Fiter=>Extact match korte hobe
-    //search=> ekta word match korle o dekabe 
-    where: {
-      //filtering & combaind 
-      //searching
-      AND: [
-        {
-          OR: [
-            {
-              title: {
-                contains: "Ron",
-                mode: "insensitive"
-              },
-              content: {
-                contains: "Ron",
-                mode: "insensitive"
-              }
-            },
-            
-            
-          ]
-        },
-        //Filtering exact 100% match hote hobe
-        {
-          title: "Ronaldo Nazario"
-        }, 
-        {
-          content: "Ronaldo"
-        }
-      ]
-    },
 
-    //
+    //search=> ekta word match korle o dekabe
+    // where: {
+    //   //filtering & combaind
+    //   //searching
+    //   AND: [
+    //     {
+    //       OR: [
+    //         {
+    //           title: {
+    //             contains: "Ron",
+    //             mode: "insensitive"
+    //           },
+    //           content: {
+    //             contains: "Ron",
+    //             mode: "insensitive"
+    //           }
+    //         },
 
+    //       ]
+    //     },
+    //     //Filtering exact 100% match hote hobe
+    //     {
+    //       title: "Ronaldo Nazario"
+    //     },
+    //     {
+    //       content: "Ronaldo"
+    //     }
+    //   ]
+    // },
+
+    //==pagination means => per page koita kore data dekate chai seta bolte hobe=
+    // page-1
+    // take: 2,
+    // skip: 1,
+
+    //page-2
+    take: 2,
+    skip: 2,
+
+    //=== pagination formula===
+
+    //1 page e ekta kore data rakbo
+    //---page =4 , limit or take =1 => skip : (4-1) * limit =>
+
+  //....page-3 per page e 10 kore dekabo........
+  //page=3, limit or take = 10=> skip (page-1) * limit= (3-1) *10 = total 20 data skip kore 3 number page e jabe
+
+
+  //...sorrting ascending or decending order or specific fileds
+
+  orderBy: {
+    //2ta post eki somoy hole multiple filed diye check korbo konta age bosano jai
+    createAt: "desc",
+    title: "asc",
+    content: "desc"
+
+    //user teke jigass korbo kon filed diye sorting chaitese and data dece hobe naki ase hobe seta
+  },
     include: {
       author: {
         omit: {
