@@ -34,9 +34,5 @@ app.use("/api/comments", commentRoutes);
 //If api is not found then give me globall error
 app.use(notFound);
 
-//specially req, res function for express
-//this middeware handle full application error globall error handler
-//next function catchAsync er next ta receive korche
-//1 email diye 2 bar register korle error ta dekte pabo etc
 app.use(globallErrorHanlder);
 export default app;
