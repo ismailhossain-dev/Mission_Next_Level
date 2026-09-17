@@ -1,24 +1,25 @@
 model User {
-    id String @id @default(uuid())
-    name String @db.VarChar(255)
-    email String @unique
-    password String
+    id          String      @id @default(uuid())
+    name        String      @db.VarChar(255)
+    email       String      @unique
+    password    String
     //ACTIVE coming from ActiveStaus
-    activeStaus ActiveStaus  @default(ACTIVE)
+    activeStaus ActiveStaus @default(ACTIVE)
     //authomatic will be import user form enum
-    role Role @default(USER)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    role        Role        @default(USER)
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
     //1 to 1 relation like ekta user ekta profile korte parbe 
-    profile Profile? 
+    profile     Profile?
+
+    //1 to 1
+    subscription Subscription?
     //1 to many relation ekta user onek gola comment korte parbe
-    comments Comment[]
+    comments     Comment[]
 
     //1 to many 
     posts Post[]
+
     //table name rename use @@
     @@map("users")
 }
-
-
-

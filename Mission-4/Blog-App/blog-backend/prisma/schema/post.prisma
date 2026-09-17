@@ -9,6 +9,8 @@ model Post {
     views Int @default(0)
     createAt DateTime @default(now())
     updateAt DateTime @updatedAt
+    //This filed for subscription model 
+    isPremium Boolean @default(false)
     //1 to many relation like ekta user onek gola comment korte parbe
     comments Comment[]
 

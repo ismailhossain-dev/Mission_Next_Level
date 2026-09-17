@@ -8,7 +8,7 @@ import { postRoute } from "./modules/post/post.route";
 import { commentRoutes } from "./modules/comment/comment.route";
 import { notFound } from "./middleware/notFound";
 import httpStatus from "http-status";
-import { globallErrorHanlder } from "./middleware/globallErrorHandler";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 const app: Application = express();
 app.use(
   cors({
@@ -34,5 +34,5 @@ app.use("/api/comments", commentRoutes);
 //If api is not found then give me globall error
 app.use(notFound);
 
-app.use(globallErrorHanlder);
+app.use(globalErrorHandler);
 export default app;

@@ -1,0 +1,16 @@
+model Subscription {
+    id               String             @id @default(uuid())
+    //userId @unique because one user will can one subscription . and after one year user will can update payment or again pay
+    userId           String             @unique
+    user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    currentPeriodEnd DateTime
+    //default ACTIVE because if user are payment then keeping status
+    status           subscriptionStatus @default(ACTIVE)
+    //stripe related id 
+
+    //stripe customer id
+
+    //stripe subscription id
+    createAt  DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
