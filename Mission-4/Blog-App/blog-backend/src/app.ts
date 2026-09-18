@@ -18,7 +18,7 @@ app.use(
   }),
 );
 //Webhooks use for store payment data
-
+app.use("/api/subscription/webhook", express.raw({type: 'application/json'}), ()=> {})
 app.use(express.json());
 //This middleware keeps client data in req.body.
 app.use(express.urlencoded({ extended: true }));
