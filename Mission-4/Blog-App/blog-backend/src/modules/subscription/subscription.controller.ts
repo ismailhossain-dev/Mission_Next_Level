@@ -15,6 +15,10 @@ const createCheckOutSession = catchAsync(async(req:Request, res:Response, next:N
 
 })
 
+const hanldeWebhook = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
+
+})
 export const subscriptionController = {
-    createCheckOutSession
+    createCheckOutSession,
+    hanldeWebhook
 }

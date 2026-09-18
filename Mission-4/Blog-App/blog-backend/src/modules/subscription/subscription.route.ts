@@ -8,4 +8,7 @@ const router = Router()
 //login takle just user pay korte parbe
 router.post("/checkout",auth(Role.USER, Role.ADMIN, Role.AUTHOR), subscriptionController.createCheckOutSession)
 
+//This a Public Api
+router.post("/webhook", subscriptionController.hanldeWebhook)
+
 export const subscriptionRoute = router;
