@@ -133,6 +133,8 @@ whsec_xxxxxxxxxxxxxxxxx
 
 Add it to .env:
 
+6.stripe trigger payment_intent.succeeded=> run api => and get all console where run backend application
+
 STRIPE_WEBHOOK_SECRET="YOUR_WEBHOOK_SIGNING_SECRET"
 🔐 Stripe Environment Variables
 STRIPE_PRODUCT_PRICE_ID="YOUR_STRIPE_PRODUCT_PRICE"
