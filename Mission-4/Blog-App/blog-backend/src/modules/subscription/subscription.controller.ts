@@ -5,7 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import htttpStatus from "http-status"
 const createCheckOutSession = catchAsync(async(req:Request, res:Response, next:NextFunction)=> {
     const userId = req.user?.id;
-    const result = await subscriptionServices.createCheckOutSession(userId as string)
+    const result = await subscriptionServices.createCheckoutSession(userId as string)
     sendResponse(res, {
         success: true,
         statusCode:htttpStatus.OK,
@@ -21,7 +21,7 @@ const hanldeWebhook = catchAsync(async(req:Request, res:Response, next:NextFunct
     const signature = req.headers['stripe-signature']
 
 
- await  subscriptionServices.hanldeWebhook(event, signature as string)
+ await  subscriptionServices.handleWebhook(event, signature as string)
     sendResponse(res, {
         success: true,
         statusCode:200,
