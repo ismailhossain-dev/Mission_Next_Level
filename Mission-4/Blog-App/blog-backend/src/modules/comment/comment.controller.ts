@@ -27,6 +27,7 @@ const getCommentByAuthorId = catchAsync(async (req : Request, res : Response, ne
     })
 })
 
+//one post get all comment with postId
 const getCommentByPostId = catchAsync(async (req : Request, res : Response, next : NextFunction) => {
     const { postId } = req.params
     const result = await commentService.getCommentByCommentId(postId as string)

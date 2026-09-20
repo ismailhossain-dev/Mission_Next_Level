@@ -117,6 +117,7 @@ const getAllPosts = async (query: IPostquery) => {
     where: {
       AND: andConditions,
     },
+    //dynamic limit & skip
     take: limit,
     skip: skip,
 
