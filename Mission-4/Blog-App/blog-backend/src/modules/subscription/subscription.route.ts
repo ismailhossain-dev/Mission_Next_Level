@@ -10,5 +10,6 @@ router.post("/checkout",auth(Role.USER, Role.ADMIN, Role.AUTHOR), subscriptionCo
 
 //This a Public Api
 router.post("/webhook", subscriptionController.hanldeWebhook)
+router.get("/status",auth(Role.USER, Role.ADMIN, Role.AUTHOR), subscriptionController.getSubscriptionStatus)
 
 export const subscriptionRoute = router;

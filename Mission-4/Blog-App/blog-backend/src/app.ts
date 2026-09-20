@@ -9,6 +9,7 @@ import { commentRoutes } from "./modules/comment/comment.route";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { subscriptionRoute } from "./modules/subscription/subscription.route";
+import { premiumRoutes } from "./modules/premium/premium.route";
 const app: Application = express();
 app.use(
   cors({
@@ -92,6 +93,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoutes);
 app.use("/api/subscription", subscriptionRoute);
+app.use("/api/premium", premiumRoutes)
 
 //If api is not found then give me globall error
 app.use(notFound);
